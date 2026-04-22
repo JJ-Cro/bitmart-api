@@ -29,12 +29,18 @@ import {
 } from './types/request/futures.types.js';
 import {
   AccountSubTransfersV1Request,
+  CancelAllSpotAlgoOrdersV4Request,
   CancelOrdersV3Request,
+  CancelSpotAlgoOrderV4Request,
   CancelSpotBatchOrdersV4Request,
   DepositWithdrawHistoryV2Request,
   MarginBorrowRecordsV1Request,
   MarginBorrowRepayV1Request,
   MarginRepayRecordsV1Request,
+  SpotAlgoHistoryOrdersV4Request,
+  SpotAlgoOpenOrdersV4Request,
+  SpotAlgoOrderByClientOrderIdV4Request,
+  SpotAlgoOrderByIdV4Request,
   SpotBrokerRebateRequest,
   SpotKlinesV1Request,
   SpotKlineV3Request,
@@ -45,6 +51,7 @@ import {
   SpotOrderTradeHistoryV4Request,
   SubmitMainTransferSubToSubV1Request,
   SubmitMarginTransferV1Request,
+  SubmitSpotAlgoOrderV4Request,
   SubmitSpotBatchOrdersV4Request,
   SubmitSpotOrderV2Request,
   SubmitSubTransferSubToMainV1Request,
@@ -94,6 +101,7 @@ import {
   MarginRepayRecordV1,
   ServiceStatus,
   SpotAccountTradeV4,
+  SpotAlgoOrderV4,
   SpotBrokerRebateResult,
   SpotCurrencyV1,
   SpotKlineV1,
@@ -509,6 +517,48 @@ export class RestClient extends BaseRestClient {
     recvWindow?: number;
   }): Promise<APIResponse<SpotAccountTradeV4[]>> {
     return this.postPrivate('spot/v4/query/order-trades', params);
+  }
+
+  submitSpotAlgoOrderV4(
+    params: SubmitSpotAlgoOrderV4Request,
+  ): Promise<APIResponse<{ order_id: string }>> {
+    return this.postPrivate('spot/v4/algo/submit_order', params);
+  }
+
+  cancelSpotAlgoOrderV4(
+    params: CancelSpotAlgoOrderV4Request,
+  ): Promise<APIResponse<{ result: boolean }>> {
+    return this.postPrivate('spot/v4/algo/cancel_order', params);
+  }
+
+  cancelAllSpotAlgoOrdersV4(
+    params: CancelAllSpotAlgoOrdersV4Request,
+  ): Promise<APIResponse<{}>> {
+    return this.postPrivate('spot/v4/algo/cancel_all', params);
+  }
+
+  getSpotAlgoOrderByIdV4(
+    params: SpotAlgoOrderByIdV4Request,
+  ): Promise<APIResponse<SpotAlgoOrderV4>> {
+    return this.postPrivate('spot/v4/query/algo/order', params);
+  }
+
+  getSpotAlgoOrderByClientOrderIdV4(
+    params: SpotAlgoOrderByClientOrderIdV4Request,
+  ): Promise<APIResponse<SpotAlgoOrderV4>> {
+    return this.postPrivate('spot/v4/query/algo/client-order', params);
+  }
+
+  getSpotAlgoOpenOrdersV4(
+    params?: SpotAlgoOpenOrdersV4Request,
+  ): Promise<APIResponse<SpotAlgoOrderV4[]>> {
+    return this.postPrivate('spot/v4/query/algo/open-orders', params);
+  }
+
+  getSpotAlgoHistoryOrdersV4(
+    params?: SpotAlgoHistoryOrdersV4Request,
+  ): Promise<APIResponse<SpotAlgoOrderV4[]>> {
+    return this.postPrivate('spot/v4/query/algo/history-orders', params);
   }
 
   /**

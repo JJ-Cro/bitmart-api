@@ -16,10 +16,13 @@ import {
   FuturesAccountPlanOrdersRequest,
   FuturesAccountTradesRequest,
   FuturesAccountTransfersRequest,
+  FuturesAffiliateDepositWithdrawalListRequest,
   FuturesAffiliateRebateApiRequest,
   FuturesAffiliateRebatesRequest,
   FuturesAffiliateRebateUserRequest,
   FuturesAffiliateTradesRequest,
+  FuturesAutoRepaymentRequest,
+  FuturesCrossCollateralInterestLogRequest,
   FuturesKlinesRequest,
   FuturesSubTransfersRequest,
   FuturesSubWalletRequest,
@@ -51,10 +54,13 @@ import {
   FuturesAccountSubTransfer,
   FuturesAccountTrade,
   FuturesAccountTransfer,
+  FuturesAffiliateDepositWithdrawalListResult,
   FuturesAffiliateRebateApiResponse,
   FuturesAffiliateRebateUserResponse,
+  FuturesAutoRepaymentApiResponse,
   FuturesContractDepth,
   FuturesContractDetails,
+  FuturesCrossCollateralInterestLogApiResponse,
   FuturesFundingRate,
   FuturesFundingRateHistory,
   FuturesKline,
@@ -270,6 +276,27 @@ export class FuturesClientV2 extends BaseRestClient {
     params: FuturesAccountHistoricTransactionRequest,
   ): Promise<APIResponse<FuturesAccountHistoricTransaction[]>> {
     return this.getPrivate('contract/private/transaction-history', params);
+  }
+
+  /**
+   * Query auto repayment records (KEYED). Defaults to last 7 days if times omitted; max 20 records per request.
+   */
+  getFuturesAutoRepayment(
+    params?: FuturesAutoRepaymentRequest,
+  ): Promise<FuturesAutoRepaymentApiResponse> {
+    return this.getPrivate('contract/private/auto_repayment', params);
+  }
+
+  /**
+   * Query cross margin interest accrual logs (KEYED). Defaults to last 7 days; max interval 90 days; max 20 records per request.
+   */
+  getFuturesCrossCollateralInterestLog(
+    params?: FuturesCrossCollateralInterestLogRequest,
+  ): Promise<FuturesCrossCollateralInterestLogApiResponse> {
+    return this.getPrivate(
+      'contract/private/cross_collateral/interest_log',
+      params,
+    );
   }
 
   getFuturesTransfers(params: FuturesAccountTransfersRequest): Promise<
@@ -491,14 +518,17 @@ export class FuturesClientV2 extends BaseRestClient {
   }
 
   /**
-   * Get User Rebate Data (KEYED)
-   * Used for API affiliates to query contract rebate data within a certain time range
-   * Feature: Query up to 60 days of data
+   * Get invited customer list (KEYED)
+   * Used by agents to query rebate information of invited users within a specified time range.
+   * Feature: Query up to 60 days of data; list entries include `accountAssetTotal` (exchange update 2026-04-07).
    */
   getFuturesAffiliateRebateUser(
     params: FuturesAffiliateRebateUserRequest,
   ): Promise<APIResponse<FuturesAffiliateRebateUserResponse>> {
-    return this.getPrivate('contract/private/affiliate/rebate-user', params);
+    return this.getPrivate(
+      'contract/private/affiliate/rebate-inviteUser',
+      params,
+    );
   }
 
   /**
@@ -510,6 +540,19 @@ export class FuturesClientV2 extends BaseRestClient {
     params: FuturesAffiliateRebateApiRequest,
   ): Promise<APIResponse<FuturesAffiliateRebateApiResponse>> {
     return this.getPrivate('contract/private/affiliate/rebate-api', params);
+  }
+
+  /**
+   * Deposit and withdrawal information of invited users (KEYED)
+   * Feature: Query up to 60 days; max 50 records per page (exchange update 2026-04-07).
+   */
+  getFuturesAffiliateDepositWithdrawalList(
+    params: FuturesAffiliateDepositWithdrawalListRequest,
+  ): Promise<FuturesAffiliateDepositWithdrawalListResult> {
+    return this.getPrivate(
+      'contract/private/affiliate/deposit-withdrawal-list',
+      params,
+    );
   }
 
   /**

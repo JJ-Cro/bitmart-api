@@ -173,3 +173,57 @@ export interface SpotBrokerRebateRequest {
   start_time?: number;
   end_time?: number;
 }
+
+/** Spot algo order (v4): TP/SL or trigger. See `POST spot/v4/algo/submit_order`. */
+export interface SubmitSpotAlgoOrderV4Request {
+  symbol: string;
+  side: 'buy' | 'sell';
+  type: 'tp/sl' | 'trigger';
+  client_order_id?: string;
+  trigger_price?: string;
+  trigger_type?: 'limit' | 'market';
+  price?: string;
+  notional?: string;
+  size?: string;
+}
+
+export interface CancelSpotAlgoOrderV4Request {
+  symbol: string;
+  order_id: string;
+  type: 'tp/sl' | 'trigger';
+}
+
+export interface CancelAllSpotAlgoOrdersV4Request {
+  symbol?: string;
+  type: 'tp/sl' | 'trigger';
+}
+
+export interface SpotAlgoOrderByIdV4Request {
+  orderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+
+export interface SpotAlgoOrderByClientOrderIdV4Request {
+  clientOrderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+
+export interface SpotAlgoOpenOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
+}
+
+export interface SpotAlgoHistoryOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
+}

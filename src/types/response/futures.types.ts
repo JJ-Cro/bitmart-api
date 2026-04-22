@@ -301,15 +301,86 @@ export interface FuturesAccountSubTransfer {
   submissionTime: number;
 }
 
-export interface FuturesAffiliateRebateUserResponse {
+/** Row from GET `contract/private/affiliate/rebate-inviteUser` (invite customer list). */
+export interface FuturesAffiliateRebateInviteUserRow {
+  rebateTotal: string;
+  tradingVolTotal: string;
+  cashbackRate: string;
+  tradingFeeTotal: string;
+  backRate: string;
   cid: number;
-  back_rate: string;
-  trading_vol_total: string;
-  trading_fee_total: string;
-  rebate_total: string;
-  trading_vol: string;
-  trading_fee: string;
-  rebate: string;
+  status: number;
+  accountAssetTotal: string;
+}
+
+/** `data` payload for GET `contract/private/affiliate/rebate-inviteUser`. */
+export interface FuturesAffiliateRebateUserResponse {
+  list: FuturesAffiliateRebateInviteUserRow[];
+  page: number;
+  size: number;
+  total: number;
+}
+
+export interface FuturesAffiliateDepositWithdrawalListItem {
+  dateTime: number;
+  cid: number;
+  remark: string;
+  parentCid: number;
+  userType: number;
+  type: number;
+  method: number;
+  amount: string;
+  coin: string;
+}
+
+export interface FuturesAffiliateDepositWithdrawalListResult {
+  total: number;
+  size: number;
+  page: number;
+  list: FuturesAffiliateDepositWithdrawalListItem[];
+}
+
+export interface FuturesAutoRepaymentRecord {
+  to_coin_code: string;
+  to_amount: string;
+  from_coin_code: string;
+  from_amount: string;
+  time: string;
+  type: string;
+  liquidation_fee: string;
+}
+
+export interface FuturesAutoRepaymentApiResponse {
+  errno: string;
+  message: string;
+  data: {
+    list: FuturesAutoRepaymentRecord[];
+    total: number;
+  };
+  success: boolean;
+}
+
+export interface FuturesCrossCollateralInterestLogItem {
+  id: number;
+  account_id: number;
+  coin_code: string;
+  rate: string;
+  interest: string;
+  liability: string;
+  interest_time: number;
+  created_at: string;
+  updated_at: string;
+  interest_free_amount: string;
+}
+
+export interface FuturesCrossCollateralInterestLogApiResponse {
+  errno: string;
+  message: string;
+  data: {
+    items: FuturesCrossCollateralInterestLogItem[];
+    total: number;
+  };
+  success: boolean;
 }
 
 export interface FuturesAffiliateRebateApiResponse {
