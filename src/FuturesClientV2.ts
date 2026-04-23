@@ -18,6 +18,7 @@ import {
   FuturesAccountTransfersRequest,
   FuturesAffiliateDepositWithdrawalListRequest,
   FuturesAffiliateRebateApiRequest,
+  FuturesAffiliateRebateInviteUserRequest,
   FuturesAffiliateRebatesRequest,
   FuturesAffiliateRebateUserRequest,
   FuturesAffiliateTradesRequest,
@@ -56,6 +57,7 @@ import {
   FuturesAccountTransfer,
   FuturesAffiliateDepositWithdrawalListResult,
   FuturesAffiliateRebateApiResponse,
+  FuturesAffiliateRebateInviteUserResponse,
   FuturesAffiliateRebateUserResponse,
   FuturesAutoRepaymentApiResponse,
   FuturesContractDepth,
@@ -518,13 +520,23 @@ export class FuturesClientV2 extends BaseRestClient {
   }
 
   /**
-   * Get invited customer list (KEYED)
-   * Used by agents to query rebate information of invited users within a specified time range.
-   * Feature: Query up to 60 days of data; list entries include `accountAssetTotal` (exchange update 2026-04-07).
+   * Get single user rebate data (KEYED)
+   * GET `contract/private/affiliate/rebate-user`
    */
   getFuturesAffiliateRebateUser(
     params: FuturesAffiliateRebateUserRequest,
   ): Promise<APIResponse<FuturesAffiliateRebateUserResponse>> {
+    return this.getPrivate('contract/private/affiliate/rebate-user', params);
+  }
+
+  /**
+   * Get invited customer list (KEYED)
+   * GET `contract/private/affiliate/rebate-inviteUser`
+   * Feature: list entries include `accountAssetTotal` (exchange update 2026-04-07).
+   */
+  getFuturesAffiliateRebateInviteUser(
+    params: FuturesAffiliateRebateInviteUserRequest,
+  ): Promise<APIResponse<FuturesAffiliateRebateInviteUserResponse>> {
     return this.getPrivate(
       'contract/private/affiliate/rebate-inviteUser',
       params,

@@ -233,7 +233,15 @@ export interface SubmitFuturesTrailOrderRequest {
   activation_price_type: 1 | 2;
 }
 
+/** GET `contract/private/affiliate/rebate-user` — single user rebate totals. */
 export interface FuturesAffiliateRebateUserRequest {
+  cid: number;
+  start_time: number;
+  end_time: number;
+}
+
+/** GET `contract/private/affiliate/rebate-inviteUser` — paginated invited customer list. */
+export interface FuturesAffiliateRebateInviteUserRequest {
   cid?: number;
   start_time: number;
   end_time: number;

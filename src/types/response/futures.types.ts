@@ -314,11 +314,23 @@ export interface FuturesAffiliateRebateInviteUserRow {
 }
 
 /** `data` payload for GET `contract/private/affiliate/rebate-inviteUser`. */
-export interface FuturesAffiliateRebateUserResponse {
+export interface FuturesAffiliateRebateInviteUserResponse {
   list: FuturesAffiliateRebateInviteUserRow[];
   page: number;
   size: number;
   total: number;
+}
+
+/** `data` payload for GET `contract/private/affiliate/rebate-user` (single user). */
+export interface FuturesAffiliateRebateUserResponse {
+  cid: number;
+  back_rate: string;
+  trading_vol_total: string;
+  trading_fee_total: string;
+  rebate_total: string;
+  trading_vol: string;
+  trading_fee: string;
+  rebate: string;
 }
 
 export interface FuturesAffiliateDepositWithdrawalListItem {
