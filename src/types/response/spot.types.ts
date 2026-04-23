@@ -292,6 +292,25 @@ export interface SpotTradeBase {
   cancelSource: string;
 }
 
+/**
+ * Spot algo order (v4): trigger or TP/SL. Returned by algo query endpoints.
+ */
+export interface SpotAlgoOrderV4 {
+  orderId: string;
+  clientOrderId: string;
+  symbol: string;
+  side: OrderSide;
+  orderMode: string;
+  trigger_type: string;
+  state: string;
+  cancelSource: string;
+  price: string;
+  size: string;
+  notional: string;
+  createTime: number;
+  updateTime: number;
+}
+
 export interface SpotOrderV4 extends SpotTradeBase {
   state: string;
   priceAvg: string;

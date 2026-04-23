@@ -713,6 +713,60 @@ export interface SpotBrokerRebateRequest {
   start_time?: number;
   end_time?: number;
 }
+⋮----
+/** Spot algo order (v4): TP/SL or trigger. See `POST spot/v4/algo/submit_order`. */
+export interface SubmitSpotAlgoOrderV4Request {
+  symbol: string;
+  side: 'buy' | 'sell';
+  type: 'tp/sl' | 'trigger';
+  client_order_id?: string;
+  trigger_price?: string;
+  trigger_type?: 'limit' | 'market';
+  price?: string;
+  notional?: string;
+  size?: string;
+}
+⋮----
+export interface CancelSpotAlgoOrderV4Request {
+  symbol: string;
+  order_id: string;
+  type: 'tp/sl' | 'trigger';
+}
+⋮----
+export interface CancelAllSpotAlgoOrdersV4Request {
+  symbol?: string;
+  type: 'tp/sl' | 'trigger';
+}
+⋮----
+export interface SpotAlgoOrderByIdV4Request {
+  orderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoOrderByClientOrderIdV4Request {
+  clientOrderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoOpenOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoHistoryOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
+}
 
 ================
 File: webpack/webpack.config.cjs
@@ -936,6 +990,43 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+================
+File: tsconfig.json
+================
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "noEmitOnError": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": false,
+    "inlineSourceMap": false,
+    "lib": ["esnext"],
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "pretty": true,
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "skipLibCheck": false,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "types": ["node", "jest"],
+    "module": "commonjs",
+    "outDir": "dist/cjs",
+    "target": "esnext"
+  },
+  "compileOnSave": true,
+  "exclude": ["node_modules", "dist", "test"],
+  "include": ["src/**/*.*", ".eslintrc.cjs"]
+}
 
 ================
 File: tsconfig.linting.json
@@ -1520,9 +1611,38 @@ export interface SubmitFuturesTrailOrderRequest {
 }
 ⋮----
 export interface FuturesAffiliateRebateUserRequest {
+  cid?: number;
+  start_time: number;
+  end_time: number;
+  page: number;
+  size: number;
+}
+⋮----
+/** Affiliate invited users deposit / withdrawal records (max 60 days, size max 50). */
+export interface FuturesAffiliateDepositWithdrawalListRequest {
+  page: number;
+  size: number;
+  type?: 1 | 2;
   cid: number;
   start_time: number;
   end_time: number;
+}
+⋮----
+export interface FuturesAutoRepaymentRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  from_coin_code?: string;
+  type?: string;
+}
+⋮----
+export interface FuturesCrossCollateralInterestLogRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  coin_code?: string;
 }
 ⋮----
 export interface FuturesAffiliateRebateApiRequest {
@@ -1864,6 +1984,25 @@ export interface SpotTradeBase {
   cancelSource: string;
 }
 ⋮----
+/**
+ * Spot algo order (v4): trigger or TP/SL. Returned by algo query endpoints.
+ */
+export interface SpotAlgoOrderV4 {
+  orderId: string;
+  clientOrderId: string;
+  symbol: string;
+  side: OrderSide;
+  orderMode: string;
+  trigger_type: string;
+  state: string;
+  cancelSource: string;
+  price: string;
+  size: string;
+  notional: string;
+  createTime: number;
+  updateTime: number;
+}
+⋮----
 export interface SpotOrderV4 extends SpotTradeBase {
   state: string;
   priceAvg: string;
@@ -1972,41 +2111,18 @@ File: .eslintrc.cjs
 // 'no-unused-vars': ['warn'],
 
 ================
-File: tsconfig.json
+File: .gitignore
 ================
-{
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "noEmitOnError": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": false,
-    "inlineSourceMap": false,
-    "lib": ["esnext"],
-    "listEmittedFiles": false,
-    "listFiles": false,
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noUnusedParameters": true,
-    "pretty": true,
-    "removeComments": false,
-    "resolveJsonModule": true,
-    "rootDir": "src",
-    "skipLibCheck": false,
-    "sourceMap": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "types": ["node", "jest"],
-    "module": "commonjs",
-    "outDir": "dist/cjs",
-    "target": "esnext"
-  },
-  "compileOnSave": true,
-  "exclude": ["node_modules", "dist", "test"],
-  "include": ["src/**/*.*", ".eslintrc.cjs"]
-}
+spot-private-test.ts
+node_modules
+futures-private-test.ts
+signTest.ts
+privaterepotracker
+restClientRegex.ts
+testfile.ts
+dist
+repomix.sh
+doc
 
 ================
 File: src/lib/websocket/WsStore.ts
@@ -2216,12 +2332,18 @@ import {
 } from './types/request/futures.types.js';
 import {
   AccountSubTransfersV1Request,
+  CancelAllSpotAlgoOrdersV4Request,
   CancelOrdersV3Request,
+  CancelSpotAlgoOrderV4Request,
   CancelSpotBatchOrdersV4Request,
   DepositWithdrawHistoryV2Request,
   MarginBorrowRecordsV1Request,
   MarginBorrowRepayV1Request,
   MarginRepayRecordsV1Request,
+  SpotAlgoHistoryOrdersV4Request,
+  SpotAlgoOpenOrdersV4Request,
+  SpotAlgoOrderByClientOrderIdV4Request,
+  SpotAlgoOrderByIdV4Request,
   SpotBrokerRebateRequest,
   SpotKlinesV1Request,
   SpotKlineV3Request,
@@ -2232,6 +2354,7 @@ import {
   SpotOrderTradeHistoryV4Request,
   SubmitMainTransferSubToSubV1Request,
   SubmitMarginTransferV1Request,
+  SubmitSpotAlgoOrderV4Request,
   SubmitSpotBatchOrdersV4Request,
   SubmitSpotOrderV2Request,
   SubmitSubTransferSubToMainV1Request,
@@ -2281,6 +2404,7 @@ import {
   MarginRepayRecordV1,
   ServiceStatus,
   SpotAccountTradeV4,
+  SpotAlgoOrderV4,
   SpotBrokerRebateResult,
   SpotCurrencyV1,
   SpotKlineV1,
@@ -2568,6 +2692,34 @@ getSpotAccountOrderTradesV4(params: {
     orderId: string;
     recvWindow?: number;
 }): Promise<APIResponse<SpotAccountTradeV4[]>>
+⋮----
+submitSpotAlgoOrderV4(
+    params: SubmitSpotAlgoOrderV4Request,
+): Promise<APIResponse<
+⋮----
+cancelSpotAlgoOrderV4(
+    params: CancelSpotAlgoOrderV4Request,
+): Promise<APIResponse<
+⋮----
+cancelAllSpotAlgoOrdersV4(
+    params: CancelAllSpotAlgoOrdersV4Request,
+): Promise<APIResponse<
+⋮----
+getSpotAlgoOrderByIdV4(
+    params: SpotAlgoOrderByIdV4Request,
+): Promise<APIResponse<SpotAlgoOrderV4>>
+⋮----
+getSpotAlgoOrderByClientOrderIdV4(
+    params: SpotAlgoOrderByClientOrderIdV4Request,
+): Promise<APIResponse<SpotAlgoOrderV4>>
+⋮----
+getSpotAlgoOpenOrdersV4(
+    params?: SpotAlgoOpenOrdersV4Request,
+): Promise<APIResponse<SpotAlgoOrderV4[]>>
+⋮----
+getSpotAlgoHistoryOrdersV4(
+    params?: SpotAlgoHistoryOrdersV4Request,
+): Promise<APIResponse<SpotAlgoOrderV4[]>>
 ⋮----
 /**
    *
@@ -2907,20 +3059,6 @@ getFuturesAffiliateTrades(
 getBrokerRebate(
     params?: SpotBrokerRebateRequest,
 ): Promise<APIResponse<SpotBrokerRebateResult>>
-
-================
-File: .gitignore
-================
-spot-private-test.ts
-node_modules
-futures-private-test.ts
-signTest.ts
-privaterepotracker
-restClientRegex.ts
-testfile.ts
-dist
-repomix.sh
-doc
 
 ================
 File: src/lib/BaseRestClient.ts
@@ -3551,15 +3689,86 @@ export interface FuturesAccountSubTransfer {
   submissionTime: number;
 }
 ⋮----
-export interface FuturesAffiliateRebateUserResponse {
+/** Row from GET `contract/private/affiliate/rebate-inviteUser` (invite customer list). */
+export interface FuturesAffiliateRebateInviteUserRow {
+  rebateTotal: string;
+  tradingVolTotal: string;
+  cashbackRate: string;
+  tradingFeeTotal: string;
+  backRate: string;
   cid: number;
-  back_rate: string;
-  trading_vol_total: string;
-  trading_fee_total: string;
-  rebate_total: string;
-  trading_vol: string;
-  trading_fee: string;
-  rebate: string;
+  status: number;
+  accountAssetTotal: string;
+}
+⋮----
+/** `data` payload for GET `contract/private/affiliate/rebate-inviteUser`. */
+export interface FuturesAffiliateRebateUserResponse {
+  list: FuturesAffiliateRebateInviteUserRow[];
+  page: number;
+  size: number;
+  total: number;
+}
+⋮----
+export interface FuturesAffiliateDepositWithdrawalListItem {
+  dateTime: number;
+  cid: number;
+  remark: string;
+  parentCid: number;
+  userType: number;
+  type: number;
+  method: number;
+  amount: string;
+  coin: string;
+}
+⋮----
+export interface FuturesAffiliateDepositWithdrawalListResult {
+  total: number;
+  size: number;
+  page: number;
+  list: FuturesAffiliateDepositWithdrawalListItem[];
+}
+⋮----
+export interface FuturesAutoRepaymentRecord {
+  to_coin_code: string;
+  to_amount: string;
+  from_coin_code: string;
+  from_amount: string;
+  time: string;
+  type: string;
+  liquidation_fee: string;
+}
+⋮----
+export interface FuturesAutoRepaymentApiResponse {
+  errno: string;
+  message: string;
+  data: {
+    list: FuturesAutoRepaymentRecord[];
+    total: number;
+  };
+  success: boolean;
+}
+⋮----
+export interface FuturesCrossCollateralInterestLogItem {
+  id: number;
+  account_id: number;
+  coin_code: string;
+  rate: string;
+  interest: string;
+  liability: string;
+  interest_time: number;
+  created_at: string;
+  updated_at: string;
+  interest_free_amount: string;
+}
+⋮----
+export interface FuturesCrossCollateralInterestLogApiResponse {
+  errno: string;
+  message: string;
+  data: {
+    items: FuturesCrossCollateralInterestLogItem[];
+    total: number;
+  };
+  success: boolean;
 }
 ⋮----
 export interface FuturesAffiliateRebateApiResponse {
@@ -3734,10 +3943,13 @@ import {
   FuturesAccountPlanOrdersRequest,
   FuturesAccountTradesRequest,
   FuturesAccountTransfersRequest,
+  FuturesAffiliateDepositWithdrawalListRequest,
   FuturesAffiliateRebateApiRequest,
   FuturesAffiliateRebatesRequest,
   FuturesAffiliateRebateUserRequest,
   FuturesAffiliateTradesRequest,
+  FuturesAutoRepaymentRequest,
+  FuturesCrossCollateralInterestLogRequest,
   FuturesKlinesRequest,
   FuturesSubTransfersRequest,
   FuturesSubWalletRequest,
@@ -3769,10 +3981,13 @@ import {
   FuturesAccountSubTransfer,
   FuturesAccountTrade,
   FuturesAccountTransfer,
+  FuturesAffiliateDepositWithdrawalListResult,
   FuturesAffiliateRebateApiResponse,
   FuturesAffiliateRebateUserResponse,
+  FuturesAutoRepaymentApiResponse,
   FuturesContractDepth,
   FuturesContractDetails,
+  FuturesCrossCollateralInterestLogApiResponse,
   FuturesFundingRate,
   FuturesFundingRateHistory,
   FuturesKline,
@@ -3947,6 +4162,20 @@ getFuturesAccountTransactionHistory(
     params: FuturesAccountHistoricTransactionRequest,
 ): Promise<APIResponse<FuturesAccountHistoricTransaction[]>>
 ⋮----
+/**
+   * Query auto repayment records (KEYED). Defaults to last 7 days if times omitted; max 20 records per request.
+   */
+getFuturesAutoRepayment(
+    params?: FuturesAutoRepaymentRequest,
+): Promise<FuturesAutoRepaymentApiResponse>
+⋮----
+/**
+   * Query cross margin interest accrual logs (KEYED). Defaults to last 7 days; max interval 90 days; max 20 records per request.
+   */
+getFuturesCrossCollateralInterestLog(
+    params?: FuturesCrossCollateralInterestLogRequest,
+): Promise<FuturesCrossCollateralInterestLogApiResponse>
+⋮----
 getFuturesTransfers(params: FuturesAccountTransfersRequest): Promise<
     APIResponse<{
       records: FuturesAccountTransfer[];
@@ -4111,9 +4340,9 @@ getFuturesAffiliateTrades(
 ): Promise<APIResponse<any>>
 ⋮----
 /**
-   * Get User Rebate Data (KEYED)
-   * Used for API affiliates to query contract rebate data within a certain time range
-   * Feature: Query up to 60 days of data
+   * Get invited customer list (KEYED)
+   * Used by agents to query rebate information of invited users within a specified time range.
+   * Feature: Query up to 60 days of data; list entries include `accountAssetTotal` (exchange update 2026-04-07).
    */
 getFuturesAffiliateRebateUser(
     params: FuturesAffiliateRebateUserRequest,
@@ -4127,6 +4356,14 @@ getFuturesAffiliateRebateUser(
 getFuturesAffiliateRebateApi(
     params: FuturesAffiliateRebateApiRequest,
 ): Promise<APIResponse<FuturesAffiliateRebateApiResponse>>
+⋮----
+/**
+   * Deposit and withdrawal information of invited users (KEYED)
+   * Feature: Query up to 60 days; max 50 records per page (exchange update 2026-04-07).
+   */
+getFuturesAffiliateDepositWithdrawalList(
+    params: FuturesAffiliateDepositWithdrawalListRequest,
+): Promise<FuturesAffiliateDepositWithdrawalListResult>
 ⋮----
 /**
    * Simulated Claim (SIGNED)
@@ -5497,7 +5734,7 @@ File: package.json
 ================
 {
   "name": "bitmart-api",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Complete & robust Node.js SDK for BitMart's REST APIs and WebSockets, with TypeScript declarations.",
   "scripts": {
     "clean": "rm -rf dist/*",

@@ -233,10 +233,47 @@ export interface SubmitFuturesTrailOrderRequest {
   activation_price_type: 1 | 2;
 }
 
+/** GET `contract/private/affiliate/rebate-user` — single user rebate totals. */
 export interface FuturesAffiliateRebateUserRequest {
   cid: number;
   start_time: number;
   end_time: number;
+}
+
+/** GET `contract/private/affiliate/rebate-inviteUser` — paginated invited customer list. */
+export interface FuturesAffiliateRebateInviteUserRequest {
+  cid?: number;
+  start_time: number;
+  end_time: number;
+  page: number;
+  size: number;
+}
+
+/** Affiliate invited users deposit / withdrawal records (max 60 days, size max 50). */
+export interface FuturesAffiliateDepositWithdrawalListRequest {
+  page: number;
+  size: number;
+  type?: 1 | 2;
+  cid: number;
+  start_time: number;
+  end_time: number;
+}
+
+export interface FuturesAutoRepaymentRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  from_coin_code?: string;
+  type?: string;
+}
+
+export interface FuturesCrossCollateralInterestLogRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  coin_code?: string;
 }
 
 export interface FuturesAffiliateRebateApiRequest {
