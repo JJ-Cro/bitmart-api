@@ -63,6 +63,27 @@ export interface FuturesFundingRate {
   expected_rate: string;
 }
 
+export interface FuturesFundingRateV2 {
+  timestamp: number;
+  symbol: string;
+  rate_value: string;
+  expected_rate: string;
+  funding_time: number;
+  funding_upper_limit: string;
+  funding_lower_limit: string;
+}
+
+/** `data` payload for GET `contract/public/funding-rate-v2`. */
+export interface FuturesFundingRateV2Response {
+  list: FuturesFundingRateV2[];
+}
+
+/** `data` payload for GET `contract/private/affiliate/aff-customer-info`. */
+export interface FuturesAffiliateCustomerInfoResponse {
+  futuresAccountAssetTotalUsdt: string;
+  futuresAccountRightUsdt: string;
+}
+
 export interface FuturesKline {
   timestamp: number;
   open_price: string;

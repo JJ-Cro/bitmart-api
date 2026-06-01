@@ -16,6 +16,7 @@ import {
   FuturesAccountPlanOrdersRequest,
   FuturesAccountTradesRequest,
   FuturesAccountTransfersRequest,
+  FuturesAffiliateCustomerInfoRequest,
   FuturesAffiliateDepositWithdrawalListRequest,
   FuturesAffiliateRebateApiRequest,
   FuturesAffiliateRebateInviteUserRequest,
@@ -24,6 +25,7 @@ import {
   FuturesAffiliateTradesRequest,
   FuturesAutoRepaymentRequest,
   FuturesCrossCollateralInterestLogRequest,
+  FuturesFundingRateV2Request,
   FuturesKlinesRequest,
   FuturesSubTransfersRequest,
   FuturesSubWalletRequest,
@@ -55,6 +57,7 @@ import {
   FuturesAccountSubTransfer,
   FuturesAccountTrade,
   FuturesAccountTransfer,
+  FuturesAffiliateCustomerInfoResponse,
   FuturesAffiliateDepositWithdrawalListResult,
   FuturesAffiliateRebateApiResponse,
   FuturesAffiliateRebateInviteUserResponse,
@@ -65,6 +68,7 @@ import {
   FuturesCrossCollateralInterestLogApiResponse,
   FuturesFundingRate,
   FuturesFundingRateHistory,
+  FuturesFundingRateV2Response,
   FuturesKline,
   FuturesLeverageBracketRule,
   FuturesMarketTrade,
@@ -156,6 +160,16 @@ export class FuturesClientV2 extends BaseRestClient {
     symbol: string;
   }): Promise<APIResponse<FuturesFundingRate>> {
     return this.get('contract/public/funding-rate', params);
+  }
+
+  /**
+   * Current funding rate for one or all contract pairs.
+   * GET `contract/public/funding-rate-v2`
+   */
+  getFuturesFundingRateV2(
+    params?: FuturesFundingRateV2Request,
+  ): Promise<APIResponse<FuturesFundingRateV2Response>> {
+    return this.get('contract/public/funding-rate-v2', params);
   }
 
   getFuturesKlines(
@@ -527,6 +541,19 @@ export class FuturesClientV2 extends BaseRestClient {
     params: FuturesAffiliateRebateUserRequest,
   ): Promise<APIResponse<FuturesAffiliateRebateUserResponse>> {
     return this.getPrivate('contract/private/affiliate/rebate-user', params);
+  }
+
+  /**
+   * Invited user contract account total assets and equity (USDT).
+   * GET `contract/private/affiliate/aff-customer-info`
+   */
+  getFuturesAffiliateCustomerInfo(
+    params: FuturesAffiliateCustomerInfoRequest,
+  ): Promise<APIResponse<FuturesAffiliateCustomerInfoResponse>> {
+    return this.getPrivate(
+      'contract/private/affiliate/aff-customer-info',
+      params,
+    );
   }
 
   /**
