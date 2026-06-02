@@ -7,6 +7,22 @@ import {
 } from './lib/BaseRestClient.js';
 import { RestClientOptions } from './lib/requestUtils.js';
 import {
+  EarnAutoSavingBatchOperateRequest,
+  EarnFixedAutoReinvestUpdateRequest,
+  EarnFixedEarlyRedeemRequest,
+  EarnFixedHistoryRequest,
+  EarnFixedPositionsRequest,
+  EarnFixedProductListRequest,
+  EarnFixedSubscribeRequest,
+  EarnFlexibleAutoSubscribeOperateRequest,
+  EarnFlexibleAutoSubscribeStatusRequest,
+  EarnFlexibleHistoryRequest,
+  EarnFlexiblePositionsRequest,
+  EarnFlexibleProductListRequest,
+  EarnFlexibleRedeemRequest,
+  EarnFlexibleSubscribeRequest,
+} from './types/request/earn.types.js';
+import {
   CancelFuturesOrderRequest,
   CancelFuturesPlanOrderRequest,
   FuturesAccountHistoricOrderRequest,
@@ -60,6 +76,18 @@ import {
   SubSpotWalletBalancesV1Request,
   SubTransfersV1Request,
 } from './types/request/spot.types.js';
+import {
+  EarnAccountPosition,
+  EarnAutoSavingBatchStatus,
+  EarnFixedHistoryRecord,
+  EarnFixedPosition,
+  EarnFixedProduct,
+  EarnFlexibleAutoSubscribeStatus,
+  EarnFlexibleHistoryRecord,
+  EarnFlexiblePosition,
+  EarnFlexibleProduct,
+  EarnPagedList,
+} from './types/response/earn.types.js';
 import {
   FuturesAccountAsset,
   FuturesAccountHistoricOrder,
@@ -982,6 +1010,113 @@ export class RestClient extends BaseRestClient {
     params: FuturesAffiliateTradesRequest,
   ): Promise<APIResponse<any>> {
     return this.getPrivate('contract/private/affiliate/trade-list', params);
+  }
+
+  /**
+   *
+   * Finance | Earn (`newearn/cloud/v1`)
+   *
+   */
+
+  getEarnAccountPosition(): Promise<APIResponse<EarnAccountPosition[]>> {
+    return this.getPrivate('newearn/cloud/v1/earn');
+  }
+
+  getFlexibleSavingProducts(
+    params: EarnFlexibleProductListRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFlexibleProduct>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/product', params);
+  }
+
+  subscribeFlexibleSaving(
+    params: EarnFlexibleSubscribeRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate('newearn/cloud/v1/saving/subscribe', params);
+  }
+
+  redeemFlexibleSaving(
+    params: EarnFlexibleRedeemRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate('newearn/cloud/v1/saving/redeem', params);
+  }
+
+  getFlexibleSavingPositions(
+    params: EarnFlexiblePositionsRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFlexiblePosition>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/earn', params);
+  }
+
+  getFlexibleSavingHistory(
+    params: EarnFlexibleHistoryRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFlexibleHistoryRecord>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/record', params);
+  }
+
+  getFixedSavingProducts(
+    params: EarnFixedProductListRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFixedProduct>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/fixed/product', params);
+  }
+
+  subscribeFixedSaving(
+    params: EarnFixedSubscribeRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate('newearn/cloud/v1/saving/fixed/subscribe', params);
+  }
+
+  getFixedSavingPositions(
+    params: EarnFixedPositionsRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFixedPosition>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/fixed/earn', params);
+  }
+
+  getFixedSavingHistory(
+    params: EarnFixedHistoryRequest,
+  ): Promise<APIResponse<EarnPagedList<EarnFixedHistoryRecord>>> {
+    return this.getPrivate('newearn/cloud/v1/saving/fixed/record', params);
+  }
+
+  redeemFixedSavingEarly(
+    params: EarnFixedEarlyRedeemRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate('newearn/cloud/v1/saving/fixed/redeem', params);
+  }
+
+  updateFixedSavingAutoReinvest(
+    params: EarnFixedAutoReinvestUpdateRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate(
+      'newearn/cloud/v1/saving/fixed/subscribe/operate',
+      params,
+    );
+  }
+
+  setAutoSavingBatch(
+    params: EarnAutoSavingBatchOperateRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate(
+      'newearn/cloud/v1/saving/subscribe/batch/operate',
+      params,
+    );
+  }
+
+  getAutoSavingBatchStatus(): Promise<APIResponse<EarnAutoSavingBatchStatus>> {
+    return this.getPrivate('newearn/cloud/v1/saving/subscribe/batch');
+  }
+
+  setFlexibleSavingAutoSubscribe(
+    params: EarnFlexibleAutoSubscribeOperateRequest,
+  ): Promise<APIResponse<boolean>> {
+    return this.postPrivate(
+      'newearn/cloud/v1/saving/subscribe/operate',
+      params,
+    );
+  }
+
+  getFlexibleSavingAutoSubscribeStatus(
+    params: EarnFlexibleAutoSubscribeStatusRequest,
+  ): Promise<APIResponse<EarnFlexibleAutoSubscribeStatus>> {
+    return this.getPrivate('newearn/cloud/v1/saving/subscribe/status', params);
   }
 
   /**

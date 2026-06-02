@@ -233,6 +233,11 @@ export interface SubmitFuturesTrailOrderRequest {
   activation_price_type: 1 | 2;
 }
 
+/** GET `contract/private/affiliate/aff-customer-info` — invited user contract account assets/equity (USDT). */
+export interface FuturesAffiliateCustomerInfoRequest {
+  userId: number;
+}
+
 /** GET `contract/private/affiliate/rebate-user` — single user rebate totals. */
 export interface FuturesAffiliateRebateUserRequest {
   cid: number;
@@ -257,6 +262,11 @@ export interface FuturesAffiliateDepositWithdrawalListRequest {
   cid: number;
   start_time: number;
   end_time: number;
+}
+
+/** GET `contract/public/funding-rate-v2` — optional symbol; omit to query all pairs. */
+export interface FuturesFundingRateV2Request {
+  symbol?: string;
 }
 
 export interface FuturesAutoRepaymentRequest {
