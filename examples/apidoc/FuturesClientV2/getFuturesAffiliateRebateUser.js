@@ -1,4 +1,6 @@
-const { FuturesClientV2 } = require('bitmart-api');
+import { FuturesClientV2 } from 'bitmart-api';
+// or, if require is preferred:
+// const { FuturesClientV2 } = require('bitmart-api');
 
 // This example shows how to call this bitmart API endpoint with either node.js, javascript (js) or typescript (ts) with the npm module "bitmart-api" for bitmart exchange
 // This bitmart API SDK is available on npm via "npm install bitmart-api"
@@ -12,12 +14,7 @@ const client = new FuturesClientV2({
   apiMemo: 'yourAPIMemoHere',
 });
 
-client
-  .getFuturesAffiliateRebateUser({
-    cid: 1000000,
-    start_time: 1000000000,
-    end_time: 2000000000,
-  })
+client.getFuturesAffiliateRebateUser(params)
   .then((response) => {
     console.log(response);
   })

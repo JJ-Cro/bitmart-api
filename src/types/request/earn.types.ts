@@ -1,11 +1,7 @@
-/** Paginated list query used across earn / saving endpoints. */
-export interface EarnPagedRequest {
+export interface EarnFlexibleProductListRequest {
+  coinName?: string;
   currentPage: number;
   sizePage: number;
-}
-
-export interface EarnFlexibleProductListRequest extends EarnPagedRequest {
-  coinName?: string;
 }
 
 export interface EarnFlexibleSubscribeRequest {
@@ -21,22 +17,28 @@ export interface EarnFlexibleRedeemRequest {
   requestNo: string;
 }
 
-export interface EarnFlexiblePositionsRequest extends EarnPagedRequest {
+export interface EarnFlexiblePositionsRequest {
   coinName?: string;
   productId?: string;
+  currentPage: number;
+  sizePage: number;
 }
 
 export type EarnFlexibleRecordType = 'subscribe' | 'redeem' | 'interest';
 
-export interface EarnFlexibleHistoryRequest extends EarnPagedRequest {
+export interface EarnFlexibleHistoryRequest {
   type: EarnFlexibleRecordType;
   startTime?: number;
   endTime?: number;
   coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
 
-export interface EarnFixedProductListRequest extends EarnPagedRequest {
+export interface EarnFixedProductListRequest {
   coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
 
 export type EarnFixedAutoSubscribeAction =
@@ -51,18 +53,22 @@ export interface EarnFixedSubscribeRequest {
   autoSubscribe: EarnFixedAutoSubscribeAction;
 }
 
-export interface EarnFixedPositionsRequest extends EarnPagedRequest {
+export interface EarnFixedPositionsRequest {
   coinName?: string;
   productId?: string;
+  currentPage: number;
+  sizePage: number;
 }
 
 export type EarnFixedRecordType = 'subscribe' | 'redeem' | 'interest';
 
-export interface EarnFixedHistoryRequest extends EarnPagedRequest {
+export interface EarnFixedHistoryRequest {
   type: EarnFixedRecordType;
   startTime?: number;
   endTime?: number;
   coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
 
 export interface EarnFixedEarlyRedeemRequest {

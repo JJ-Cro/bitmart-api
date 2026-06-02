@@ -84,9 +84,11 @@ src/
     webCryptoAPI.ts
   types/
     request/
+      earn.types.ts
       futures.types.ts
       spot.types.ts
     response/
+      earn.types.ts
       futures.types.ts
       shared.types.ts
       spot.types.ts
@@ -109,7 +111,6 @@ LICENSE.md
 package.json
 postBuild.sh
 README.md
-tea.yaml
 tsconfig.cjs.json
 tsconfig.esm.json
 tsconfig.json
@@ -216,11 +217,6 @@ export type WsRequestOperation<TWSTopic extends string> =
   | WsFuturesOperation<TWSTopic>;
 
 ================
-File: src/index.ts
-================
-
-
-================
 File: .prettierrc
 ================
 {
@@ -251,15 +247,6 @@ cat >dist/mjs/package.json <<!EOF
 
 find src -name '*.d.ts' -exec cp {} dist/mjs \;
 find src -name '*.d.ts' -exec cp {} dist/cjs \;
-
-================
-File: tea.yaml
-================
----
-version: 1.0.0
-codeOwners:
-  - '0xeb1a7BF44a801e33a339705A266Afc0Cba3D6D54'
-quorum: 1
 
 ================
 File: tsconfig.cjs.json
@@ -523,250 +510,221 @@ export type DefaultLogger = typeof DefaultLogger;
 // console.log(_params);
 
 ================
-File: src/types/request/spot.types.ts
+File: src/types/request/earn.types.ts
 ================
-export interface SpotKlineV3Request {
-  symbol: string;
-  before?: number;
-  after?: number;
-  step?: number;
-  limit?: number;
+export interface EarnFlexibleProductListRequest {
+  coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
 ⋮----
-export interface SpotKlinesV1Request {
-  symbol: string;
-  from: number;
-  to: number;
-  step?: number;
-}
-⋮----
-export interface SpotOrderBookDepthV1Request {
-  symbol: string;
-  precision?: string;
-  size?: number;
-}
-⋮----
-export interface SubmitWithdrawalV1Request {
-  currency: string;
+export interface EarnFlexibleSubscribeRequest {
+  productId: string;
   amount: string;
-  destination: 'To Digital Address';
-  address: string;
-  address_memo?: string;
-}
-⋮----
-export interface DepositWithdrawHistoryV2Request {
-  currency?: string;
-  operation_type: 'deposit' | 'withdraw';
-  start_time?: number;
-  end_time?: number;
-  N: number;
-}
-⋮----
-export interface SubmitMarginTransferV1Request {
-  symbol: string;
-  currency: string;
-  amount: string;
-  side: 'in' | 'out';
-}
-⋮----
-export interface SubmitSpotOrderV2Request {
-  symbol: string;
-  side: 'buy' | 'sell';
-  type: 'limit' | 'market' | 'limit_maker' | 'ioc';
-  stpmode?: 'none' | 'cancel_maker' | 'cancel_taker' | 'cancel_both';
-  client_order_id?: string;
-  size?: string;
-  price?: string;
-  notional?: string;
-}
-⋮----
-export type CancelOrdersV3Request = {
-  symbol: string;
-  order_id?: string;
-  client_order_id?: string;
-} & ({ order_id: string } | { client_order_id: string });
-⋮----
-export interface SubmitSpotBatchOrdersV4Request {
-  symbol: string;
-  orderParams: {
-    clientOrderId?: string;
-    size?: string;
-    price?: string;
-    side: 'buy' | 'sell';
-    type: 'limit' | 'market' | 'limit_maker' | 'ioc';
-    stpmode?: 'none' | 'cancel_maker' | 'cancel_taker' | 'cancel_both';
-    notional?: string;
-  }[];
-  recvWindow?: number;
-}
-⋮----
-export interface CancelSpotBatchOrdersV4Request {
-  symbol: string;
-  orderIds?: string[];
-  clientOrderIds?: string[];
-  recvWindow?: number;
-}
-⋮----
-export interface SpotOrderByIdV4Request {
-  orderId: string;
-  queryState?: 'open' | 'history';
-  recvwindow?: number;
-}
-⋮----
-export interface SpotOrderByClientOrderIdV4Request {
-  clientOrderId: string;
-  queryState?: 'open' | 'history';
-  recvwindow?: number;
-}
-⋮----
-export interface SpotOpenOrdersV4Request {
-  orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
-  startTime?: number; // Start time in milliseconds, e.g., 1681701557927
-  endTime?: number; // End time in milliseconds, e.g., 1681701557927
-  limit?: number; // Number of queries, allowed range [1,200], default is 200
-  recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
-}
-⋮----
-orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
-startTime?: number; // Start time in milliseconds, e.g., 1681701557927
-endTime?: number; // End time in milliseconds, e.g., 1681701557927
-limit?: number; // Number of queries, allowed range [1,200], default is 200
-recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
-⋮----
-export interface SpotOrderTradeHistoryV4Request {
-  orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
-  startTime?: number; // Start time in milliseconds, e.g., 1681701557927
-  endTime?: number; // End time in milliseconds, e.g., 1681701557927
-  limit?: number; // Number of queries, allowed range [1,200], default is 200
-  recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
-  symbol?: string; // Trading pair, e.g., BTC_USDT
-}
-⋮----
-orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
-startTime?: number; // Start time in milliseconds, e.g., 1681701557927
-endTime?: number; // End time in milliseconds, e.g., 1681701557927
-limit?: number; // Number of queries, allowed range [1,200], default is 200
-recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
-symbol?: string; // Trading pair, e.g., BTC_USDT
-⋮----
-export interface MarginBorrowRepayV1Request {
-  symbol: string;
-  currency: string;
-  amount: string;
-}
-⋮----
-export interface MarginBorrowRecordsV1Request {
-  symbol: string;
-  start_time?: number;
-  end_time?: number;
-  N?: number;
-  borrow_id?: string;
-}
-⋮----
-export interface MarginRepayRecordsV1Request {
-  symbol: string;
-  start_time?: number;
-  end_time?: number;
-  N?: number;
-  repay_id?: string;
-  currency?: string;
-}
-⋮----
-export interface SubmitSubTransferSubToMainV1Request {
+  /** Unique request key, 20 digits (0-9 only) */
   requestNo: string;
-  amount: string;
-  currency: string;
 }
 ⋮----
-export interface SubmitSubTransferV1Request {
+/** Unique request key, 20 digits (0-9 only) */
+⋮----
+export interface EarnFlexibleRedeemRequest {
+  earnId: string;
+  amount: string;
   requestNo: string;
-  amount: string;
-  currency: string;
-  subAccount: string;
 }
 ⋮----
-export interface SubmitMainTransferSubToSubV1Request {
-  requestNo: string;
-  amount: string;
-  currency: string;
-  fromAccount: string;
-  toAccount: string;
+export interface EarnFlexiblePositionsRequest {
+  coinName?: string;
+  productId?: string;
+  currentPage: number;
+  sizePage: number;
 }
 ⋮----
-export interface SubTransfersV1Request {
-  moveType: 'spot to spot';
-  N: number;
-  accountName?: string;
-}
+export type EarnFlexibleRecordType = 'subscribe' | 'redeem' | 'interest';
 ⋮----
-export interface AccountSubTransfersV1Request {
-  moveType: 'spot to spot';
-  N: number;
-}
-⋮----
-export interface SubSpotWalletBalancesV1Request {
-  subAccount: string;
-  currency?: string;
-}
-⋮----
-export interface SpotBrokerRebateRequest {
-  start_time?: number;
-  end_time?: number;
-}
-⋮----
-/** Spot algo order (v4): TP/SL or trigger. See `POST spot/v4/algo/submit_order`. */
-export interface SubmitSpotAlgoOrderV4Request {
-  symbol: string;
-  side: 'buy' | 'sell';
-  type: 'tp/sl' | 'trigger';
-  client_order_id?: string;
-  trigger_price?: string;
-  trigger_type?: 'limit' | 'market';
-  price?: string;
-  notional?: string;
-  size?: string;
-}
-⋮----
-export interface CancelSpotAlgoOrderV4Request {
-  symbol: string;
-  order_id: string;
-  type: 'tp/sl' | 'trigger';
-}
-⋮----
-export interface CancelAllSpotAlgoOrdersV4Request {
-  symbol?: string;
-  type: 'tp/sl' | 'trigger';
-}
-⋮----
-export interface SpotAlgoOrderByIdV4Request {
-  orderId: string;
-  queryState?: 'open' | 'history';
-  recvWindow?: number;
-}
-⋮----
-export interface SpotAlgoOrderByClientOrderIdV4Request {
-  clientOrderId: string;
-  queryState?: 'open' | 'history';
-  recvWindow?: number;
-}
-⋮----
-export interface SpotAlgoOpenOrdersV4Request {
-  symbol?: string;
-  orderMode?: 'trigger' | 'tp/sl';
+export interface EarnFlexibleHistoryRequest {
+  type: EarnFlexibleRecordType;
   startTime?: number;
   endTime?: number;
-  limit?: number;
-  recvWindow?: number;
+  coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
 ⋮----
-export interface SpotAlgoHistoryOrdersV4Request {
-  symbol?: string;
-  orderMode?: 'trigger' | 'tp/sl';
+export interface EarnFixedProductListRequest {
+  coinName?: string;
+  currentPage: number;
+  sizePage: number;
+}
+⋮----
+export type EarnFixedAutoSubscribeAction =
+  | 'OFF'
+  | 'REINVEST_FLEXIBLE'
+  | 'REINVEST_FIXED';
+⋮----
+export interface EarnFixedSubscribeRequest {
+  productId: string;
+  amount: string;
+  requestNo: string;
+  autoSubscribe: EarnFixedAutoSubscribeAction;
+}
+⋮----
+export interface EarnFixedPositionsRequest {
+  coinName?: string;
+  productId?: string;
+  currentPage: number;
+  sizePage: number;
+}
+⋮----
+export type EarnFixedRecordType = 'subscribe' | 'redeem' | 'interest';
+⋮----
+export interface EarnFixedHistoryRequest {
+  type: EarnFixedRecordType;
   startTime?: number;
   endTime?: number;
-  limit?: number;
-  recvWindow?: number;
+  coinName?: string;
+  currentPage: number;
+  sizePage: number;
 }
+⋮----
+export interface EarnFixedEarlyRedeemRequest {
+  earnId: string;
+  requestNo: string;
+}
+⋮----
+export interface EarnFixedAutoReinvestUpdateRequest {
+  earnId: string;
+  autoSubscribe: EarnFixedAutoSubscribeAction;
+}
+⋮----
+export type EarnAutoSavingBatchAction = 'open' | 'close';
+⋮----
+export interface EarnAutoSavingBatchOperateRequest {
+  autoSubscribe: EarnAutoSavingBatchAction;
+}
+⋮----
+export interface EarnFlexibleAutoSubscribeOperateRequest {
+  productId: string;
+  autoSubscribe: EarnAutoSavingBatchAction;
+}
+⋮----
+export interface EarnFlexibleAutoSubscribeStatusRequest {
+  productId: string;
+}
+
+================
+File: src/types/response/earn.types.ts
+================
+export interface EarnPagedList<T> {
+  total: number;
+  list: T[];
+}
+⋮----
+export interface EarnAccountPosition {
+  coinName: string;
+  totalUserSum: string;
+  totalProfit: string;
+  previousProfit: string;
+}
+⋮----
+export interface EarnSavingTierRate {
+  minPurchaseAmount: string;
+  maxPurchaseAmount: string;
+  apy: string;
+}
+⋮----
+export interface EarnFlexibleProduct {
+  productId: string;
+  coinName: string;
+  productTag: string;
+  apy: string;
+  minPurchaseAmount: string;
+  maxPurchaseAmount: string;
+  additionalApy: string;
+  hasTierRate: boolean;
+  tierRate?: EarnSavingTierRate[];
+}
+⋮----
+export interface EarnFlexiblePosition {
+  earnId: string;
+  productId: string;
+  coinId: number;
+  coinName: string;
+  productTag: string;
+  apy: string;
+  totalProfit: string;
+  autoSubscribe: boolean;
+  additionalApy: string;
+  hasTierRate: boolean;
+  tierRate?: EarnSavingTierRate[];
+}
+⋮----
+export interface EarnFlexibleHistoryRecord {
+  type: string;
+  recordId: string;
+  productId: string;
+  coinName: string;
+  amount: string;
+  productTag: string;
+  time: number;
+  subscribeType: string;
+  requestNo: string;
+  status: string;
+}
+⋮----
+export interface EarnFixedProduct {
+  productId: string;
+  coinName: string;
+  productTag: string;
+  lockDay: number;
+  apy: string;
+  minPurchaseAmount: string;
+  maxPurchaseAmount: string;
+  additionalApy: string;
+}
+⋮----
+export interface EarnFixedPosition {
+  earnId: string;
+  productId: string;
+  coinId: number;
+  coinName: string;
+  amount: string;
+  estimatedInterest: string;
+  expiredDate: number;
+  productTag: string;
+  apy: string;
+  lockDay: number;
+  totalProfit: string;
+  subscribeType: string;
+  additionalApy: string;
+}
+⋮----
+export interface EarnFixedHistoryRecord {
+  type: string;
+  recordId: string;
+  productId: string;
+  lockDay: number;
+  coinName: string;
+  amount: string;
+  productTag: string;
+  time: number;
+  subscribeType: string;
+  requestNo: string;
+  status: string;
+}
+⋮----
+export interface EarnAutoSavingBatchStatus {
+  batchSubscribeStatus: 'ON' | 'OFF';
+}
+⋮----
+export interface EarnFlexibleAutoSubscribeStatus {
+  subscribeStatus: 'ON' | 'OFF';
+}
+
+================
+File: src/index.ts
+================
+
 
 ================
 File: webpack/webpack.config.cjs
@@ -1350,310 +1308,249 @@ export async function signMessage(
 export function checkWebCryptoAPISupported()
 
 ================
-File: src/types/request/futures.types.ts
+File: src/types/request/spot.types.ts
 ================
-export interface FuturesKlinesRequest {
+export interface SpotKlineV3Request {
   symbol: string;
-  start_time: number;
-  end_time: number;
+  before?: number;
+  after?: number;
+  step?: number;
+  limit?: number;
+}
+⋮----
+export interface SpotKlinesV1Request {
+  symbol: string;
+  from: number;
+  to: number;
   step?: number;
 }
 ⋮----
-/** Get Order Detail - symbol and order_id required. */
-export interface GetFuturesOrderRequest {
+export interface SpotOrderBookDepthV1Request {
   symbol: string;
-  order_id: string;
-  account?: 'futures' | 'copy_trading';
+  precision?: string;
+  size?: number;
 }
 ⋮----
-/** Cancel Order - symbol required. order_id or client_order_id for specific cancel; omit both to cancel all under symbol. */
-export interface CancelFuturesOrderRequest {
-  symbol: string;
-  order_id?: string;
-  client_order_id?: string;
+export interface SubmitWithdrawalV1Request {
+  currency: string;
+  amount: string;
+  destination: 'To Digital Address';
+  address: string;
+  address_memo?: string;
 }
 ⋮----
-/** Cancel Plan Order - symbol required, order_id or client_order_id for specific cancel. */
-export interface CancelFuturesPlanOrderRequest {
-  symbol: string;
-  order_id?: string;
-  client_order_id?: string;
-}
-⋮----
-/** Cancel Trail Order - symbol required, order_id for specific cancel. No client_order_id. */
-export interface CancelFuturesTrailOrderRequest {
-  symbol: string;
-  order_id?: string;
-}
-⋮----
-export interface FuturesAccountHistoricOrderRequest {
-  symbol: string;
-  start_time?: number;
-  end_time?: number;
-  account?: string;
-}
-⋮----
-export interface FuturesAccountOpenOrdersRequest {
-  symbol?: string;
-  type?: 'limit' | 'market' | 'trailing';
-  order_state?: 'all' | 'partially_filled';
-  limit?: number;
-}
-⋮----
-export interface FuturesAccountPlanOrdersRequest {
-  symbol?: string;
-  type?: 'limit' | 'market';
-  limit?: number;
-  plan_type?: 'plan' | 'profit_loss';
-}
-⋮----
-export interface FuturesAccountTradesRequest {
-  symbol?: string;
-  start_time?: number;
-  end_time?: number;
-  account?: string;
-  order_id?: number;
-  client_order_id?: string;
-}
-⋮----
-export interface FuturesAccountHistoricTransactionRequest {
-  symbol?: string;
-  flow_type?: 0 | 1 | 2 | 3 | 4 | 5;
-  start_time?: number;
-  end_time?: number;
-  page_size?: number;
-  account?: string;
-}
-⋮----
-export interface FuturesAccountTransfersRequest {
+export interface DepositWithdrawHistoryV2Request {
   currency?: string;
-  time_start?: number;
-  time_end?: number;
-  page: number;
-  limit: number;
+  operation_type: 'deposit' | 'withdraw';
+  start_time?: number;
+  end_time?: number;
+  N: number;
+}
+⋮----
+export interface SubmitMarginTransferV1Request {
+  symbol: string;
+  currency: string;
+  amount: string;
+  side: 'in' | 'out';
+}
+⋮----
+export interface SubmitSpotOrderV2Request {
+  symbol: string;
+  side: 'buy' | 'sell';
+  type: 'limit' | 'market' | 'limit_maker' | 'ioc';
+  stpmode?: 'none' | 'cancel_maker' | 'cancel_taker' | 'cancel_both';
+  client_order_id?: string;
+  size?: string;
+  price?: string;
+  notional?: string;
+}
+⋮----
+export type CancelOrdersV3Request = {
+  symbol: string;
+  order_id?: string;
+  client_order_id?: string;
+} & ({ order_id: string } | { client_order_id: string });
+⋮----
+export interface SubmitSpotBatchOrdersV4Request {
+  symbol: string;
+  orderParams: {
+    clientOrderId?: string;
+    size?: string;
+    price?: string;
+    side: 'buy' | 'sell';
+    type: 'limit' | 'market' | 'limit_maker' | 'ioc';
+    stpmode?: 'none' | 'cancel_maker' | 'cancel_taker' | 'cancel_both';
+    notional?: string;
+  }[];
   recvWindow?: number;
 }
 ⋮----
-export interface SubmitFuturesOrderRequest {
+export interface CancelSpotBatchOrdersV4Request {
   symbol: string;
-  client_order_id?: string;
-  side: 1 | 2 | 3 | 4;
-  mode?: 1 | 2 | 3 | 4;
-  type?: 'limit' | 'market';
-  leverage?: string;
-  open_type?: 'cross' | 'isolated';
-  size: number;
-  price?: string;
-  preset_take_profit_price_type?: 1 | 2;
-  preset_stop_loss_price_type?: 1 | 2;
-  preset_take_profit_price?: string;
-  preset_stop_loss_price?: string;
-  stp_mode?: number;
+  orderIds?: string[];
+  clientOrderIds?: string[];
+  recvWindow?: number;
 }
 ⋮----
-export interface UpdateFuturesLimitOrderRequest {
-  symbol: string;
-  order_id?: number;
-  client_order_id?: string;
-  price?: string;
-  size?: string;
+export interface SpotOrderByIdV4Request {
+  orderId: string;
+  queryState?: 'open' | 'history';
+  recvwindow?: number;
 }
 ⋮----
-export interface SubmitFuturesPlanOrderRequest {
-  symbol: string;
-  type?: 'limit' | 'market' | 'take_profit' | 'stop_loss';
-  side: 1 | 2 | 3 | 4;
-  leverage: string;
-  open_type: 'cross' | 'isolated';
-  mode?: 1 | 2 | 3 | 4;
-  size: number;
-  trigger_price: string;
-  executive_price?: string;
-  price_way: 1 | 2;
-  price_type: 1 | 2;
-  plan_category?: 1 | 2;
-  preset_take_profit_price_type?: 1 | 2;
-  preset_stop_loss_price_type?: 1 | 2;
-  preset_take_profit_price?: string;
-  preset_stop_loss_price?: string;
+export interface SpotOrderByClientOrderIdV4Request {
+  clientOrderId: string;
+  queryState?: 'open' | 'history';
+  recvwindow?: number;
 }
 ⋮----
-export interface SubmitFuturesTransferRequest {
-  currency: string; // Only USDT is supported
-  amount: string; // Transfer amount, allowed range[0.01,10000000000]
-  type: 'spot_to_contract' | 'contract_to_spot';
+export interface SpotOpenOrdersV4Request {
+  orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
+  startTime?: number; // Start time in milliseconds, e.g., 1681701557927
+  endTime?: number; // End time in milliseconds, e.g., 1681701557927
+  limit?: number; // Number of queries, allowed range [1,200], default is 200
   recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
 }
 ⋮----
-currency: string; // Only USDT is supported
-amount: string; // Transfer amount, allowed range[0.01,10000000000]
-⋮----
+orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
+startTime?: number; // Start time in milliseconds, e.g., 1681701557927
+endTime?: number; // End time in milliseconds, e.g., 1681701557927
+limit?: number; // Number of queries, allowed range [1,200], default is 200
 recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
 ⋮----
-export interface SetFuturesLeverageRequest {
-  symbol: string; // Symbol of the contract(like BTCUSDT)
-  leverage?: string; // Order leverage
-  open_type: 'cross' | 'isolated'; // Open type, required at close position
+export interface SpotOrderTradeHistoryV4Request {
+  orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
+  startTime?: number; // Start time in milliseconds, e.g., 1681701557927
+  endTime?: number; // End time in milliseconds, e.g., 1681701557927
+  limit?: number; // Number of queries, allowed range [1,200], default is 200
+  recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+  symbol?: string; // Trading pair, e.g., BTC_USDT
 }
 ⋮----
-symbol: string; // Symbol of the contract(like BTCUSDT)
-leverage?: string; // Order leverage
-open_type: 'cross' | 'isolated'; // Open type, required at close position
+orderMode?: 'spot' | 'iso_margin'; // Order mode: 'spot' for spot trade, 'iso_margin' for isolated margin trade
+startTime?: number; // Start time in milliseconds, e.g., 1681701557927
+endTime?: number; // End time in milliseconds, e.g., 1681701557927
+limit?: number; // Number of queries, allowed range [1,200], default is 200
+recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+symbol?: string; // Trading pair, e.g., BTC_USDT
 ⋮----
-export interface TransferFuturesAssetsRequest {
-  requestNo: string; // UUID, unique identifier, max length 64
-  amount: string; // Transfer amount
-  currency: 'USDT'; // Currently only USDT is supported
-  subAccount: string; // Sub-Account username
-}
-⋮----
-requestNo: string; // UUID, unique identifier, max length 64
-amount: string; // Transfer amount
-currency: 'USDT'; // Currently only USDT is supported
-subAccount: string; // Sub-Account username
-⋮----
-export interface SubmitFuturesSubToMainSubFromSubRequest {
-  requestNo: string; // UUID, unique identifier, max length 64
-  amount: string; // Transfer amount
-  currency: 'USDT'; // Currently only USDT is supported
-}
-⋮----
-requestNo: string; // UUID, unique identifier, max length 64
-amount: string; // Transfer amount
-currency: 'USDT'; // Currently only USDT is supported
-⋮----
-export interface FuturesSubWalletRequest {
-  subAccount: string; // Sub-Account username
-  currency?: string; // Currency is optional
-}
-⋮----
-subAccount: string; // Sub-Account username
-currency?: string; // Currency is optional
-⋮----
-export interface FuturesSubTransfersRequest {
-  subAccount: string;
-  limit: number; // Range [1,100]
-}
-⋮----
-limit: number; // Range [1,100]
-⋮----
-export interface FuturesAffiliateRebatesRequest {
-  user_id?: number;
-  page: number;
-  size: number;
+export interface MarginBorrowRepayV1Request {
+  symbol: string;
   currency: string;
-  rebate_start_time?: number;
-  rebate_end_time?: number;
-  register_start_time?: number;
-  register_end_time?: number;
+  amount: string;
 }
 ⋮----
-export interface FuturesAffiliateTradesRequest {
-  user_id?: number;
-  page: number;
-  type: 1 | 2;
-  size: number;
-  start_time: number;
-  end_time: number;
-}
-⋮----
-export interface SubmitFuturesTPSLOrderRequest {
+export interface MarginBorrowRecordsV1Request {
   symbol: string;
-  type: 'take_profit' | 'stop_loss';
-  side: 2 | 3;
-  size?: number;
-  trigger_price: string;
-  executive_price: string;
-  price_type: 1 | 2;
-  plan_category?: 1 | 2;
-  client_order_id?: string;
-  category?: 'limit' | 'market';
-}
-⋮----
-export interface UpdateFuturesPlanOrderRequest {
-  symbol: string;
-  order_id?: string;
-  trigger_price: string;
-  executive_price?: string;
-  price_type: 1 | 2;
-  type: 'limit' | 'market';
-}
-⋮----
-export interface UpdateFuturesPresetPlanOrderRequest {
-  order_id: string;
-  symbol: string;
-  preset_take_profit_price_type?: 1 | 2;
-  preset_stop_loss_price_type?: 1 | 2;
-  preset_take_profit_price?: string;
-  preset_stop_loss_price?: string;
-}
-⋮----
-export interface UpdateFuturesTPSLOrderRequest {
-  symbol: string;
-  order_id?: string;
-  client_order_id?: string;
-  trigger_price: string;
-  executive_price?: string;
-  price_type: 1 | 2;
-  plan_category?: 1 | 2;
-  category?: 'limit' | 'market';
-}
-⋮----
-export interface SubmitFuturesTrailOrderRequest {
-  symbol: string;
-  side: 1 | 2 | 3 | 4;
-  leverage: string;
-  open_type: 'cross' | 'isolated';
-  size: number;
-  activation_price: string;
-  callback_rate: string;
-  activation_price_type: 1 | 2;
-}
-⋮----
-export interface FuturesAffiliateRebateUserRequest {
-  cid?: number;
-  start_time: number;
-  end_time: number;
-  page: number;
-  size: number;
-}
-⋮----
-/** Affiliate invited users deposit / withdrawal records (max 60 days, size max 50). */
-export interface FuturesAffiliateDepositWithdrawalListRequest {
-  page: number;
-  size: number;
-  type?: 1 | 2;
-  cid: number;
-  start_time: number;
-  end_time: number;
-}
-⋮----
-export interface FuturesAutoRepaymentRequest {
   start_time?: number;
   end_time?: number;
-  page?: number;
-  size?: number;
-  from_coin_code?: string;
-  type?: string;
+  N?: number;
+  borrow_id?: string;
 }
 ⋮----
-export interface FuturesCrossCollateralInterestLogRequest {
+export interface MarginRepayRecordsV1Request {
+  symbol: string;
   start_time?: number;
   end_time?: number;
-  page?: number;
-  size?: number;
-  coin_code?: string;
-}
-⋮----
-export interface FuturesAffiliateRebateApiRequest {
-  cid: number;
-  start_time: number;
-  end_time: number;
-}
-⋮----
-export interface SubmitFuturesSimulatedClaimRequest {
+  N?: number;
+  repay_id?: string;
   currency?: string;
-  amount?: string;
+}
+⋮----
+export interface SubmitSubTransferSubToMainV1Request {
+  requestNo: string;
+  amount: string;
+  currency: string;
+}
+⋮----
+export interface SubmitSubTransferV1Request {
+  requestNo: string;
+  amount: string;
+  currency: string;
+  subAccount: string;
+}
+⋮----
+export interface SubmitMainTransferSubToSubV1Request {
+  requestNo: string;
+  amount: string;
+  currency: string;
+  fromAccount: string;
+  toAccount: string;
+}
+⋮----
+export interface SubTransfersV1Request {
+  moveType: 'spot to spot';
+  N: number;
+  accountName?: string;
+}
+⋮----
+export interface AccountSubTransfersV1Request {
+  moveType: 'spot to spot';
+  N: number;
+}
+⋮----
+export interface SubSpotWalletBalancesV1Request {
+  subAccount: string;
+  currency?: string;
+}
+⋮----
+export interface SpotBrokerRebateRequest {
+  start_time?: number;
+  end_time?: number;
+}
+⋮----
+/** Spot algo order (v4): TP/SL or trigger. See `POST spot/v4/algo/submit_order`. */
+export interface SubmitSpotAlgoOrderV4Request {
+  symbol: string;
+  side: 'buy' | 'sell';
+  type: 'tp/sl' | 'trigger';
+  client_order_id?: string;
+  trigger_price?: string;
+  trigger_type?: 'limit' | 'market';
+  price?: string;
+  notional?: string;
+  size?: string;
+}
+⋮----
+export interface CancelSpotAlgoOrderV4Request {
+  symbol: string;
+  order_id: string;
+  type: 'tp/sl' | 'trigger';
+}
+⋮----
+export interface CancelAllSpotAlgoOrdersV4Request {
+  symbol?: string;
+  type: 'tp/sl' | 'trigger';
+}
+⋮----
+export interface SpotAlgoOrderByIdV4Request {
+  orderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoOrderByClientOrderIdV4Request {
+  clientOrderId: string;
+  queryState?: 'open' | 'history';
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoOpenOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
+}
+⋮----
+export interface SpotAlgoHistoryOrdersV4Request {
+  symbol?: string;
+  orderMode?: 'trigger' | 'tp/sl';
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  recvWindow?: number;
 }
 
 ================
@@ -2299,6 +2196,192 @@ deleteTopic(key: WsKey, topic: TWSTopicSubscribeEventArgs)
 // Check if we're subscribed to a topic like this
 
 ================
+File: src/lib/BaseRestClient.ts
+================
+import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+// NOTE: https.Agent is Node.js-only and not available in browser environments
+// Browser builds (via webpack) exclude this module - see webpack.config.js fallback settings
+import https from 'https';
+⋮----
+import { neverGuard } from './misc-util.js';
+import {
+  APIID,
+  getRestBaseUrl,
+  RestClientOptions,
+  serializeParams,
+} from './requestUtils.js';
+import { checkWebCryptoAPISupported, signMessage } from './webCryptoAPI.js';
+⋮----
+/**
+ * Used to switch how authentication/requests work under the hood
+ */
+⋮----
+export type RestClientType =
+  (typeof REST_CLIENT_TYPE_ENUM)[keyof typeof REST_CLIENT_TYPE_ENUM];
+⋮----
+interface SignedRequest<T extends object | undefined = {}> {
+  originalParams: T;
+  paramsWithSign?: T & { sign: string };
+  serializedParams: string;
+  sign: string;
+  queryParamsWithSign: string;
+  timestamp: number;
+  recvWindow: number;
+}
+⋮----
+interface UnsignedRequest<T extends object | undefined = {}> {
+  originalParams: T;
+  paramsWithSign: T;
+}
+⋮----
+type SignMethod = 'bitmart';
+⋮----
+/**
+ * Enables:
+ * - Detailed request/response logging
+ * - Full request dump in any exceptions thrown from API responses
+ */
+⋮----
+// request: {
+//   url: response.config.url,
+//   method: response.config.method,
+//   data: response.config.data,
+//   headers: response.config.headers,
+// },
+⋮----
+export abstract class BaseRestClient
+⋮----
+/** Defines the client type (affecting how requests & signatures behave) */
+abstract getClientType(): RestClientType;
+⋮----
+/**
+   * Create an instance of the REST client. Pass API credentials in the object in the first parameter.
+   * @param {RestClientOptions} [restClientOptions={}] options to configure REST API connectivity
+   * @param {AxiosRequestConfig} [networkOptions={}] HTTP networking options for axios
+   */
+constructor(
+    restClientOptions: RestClientOptions = {},
+    networkOptions: AxiosRequestConfig = {},
+)
+⋮----
+/** Throw errors if any request params are empty */
+⋮----
+/** in ms == 5 minutes by default */
+⋮----
+/** inject custom rquest options based on axios specs - see axios docs for more guidance on AxiosRequestConfig: https://github.com/axios/axios#request-config */
+⋮----
+// If enabled, configure a https agent with keepAlive enabled
+// NOTE: This is Node.js-only functionality. In browser environments, this code is skipped
+// as the 'https' module is excluded via webpack fallback configuration.
+// Browser connection pooling is handled automatically by the browser itself.
+⋮----
+// Extract existing https agent parameters, if provided, to prevent the keepAlive flag from overwriting an existing https agent completely
+⋮----
+// For more advanced configuration, raise an issue on GitHub or use the "networkOptions"
+// parameter to define a custom httpsAgent with the desired properties
+⋮----
+// Throw if one of the 3 values is missing, but at least one of them is set
+⋮----
+// Check Web Crypto API support when credentials are provided and no custom sign function is used
+⋮----
+// Provide a user friendly error message if the user is using an outdated Node.js version (where Web Crypto API is not available).
+// A few users have been caught out by using the end-of-life Node.js v18 release.
+⋮----
+/**
+   * Timestamp used to sign the request. Override this method to implement your own timestamp/sync mechanism
+   */
+getSignTimestampMs(): number
+⋮----
+get(endpoint: string, params?: any)
+⋮----
+post(endpoint: string, params?: any)
+⋮----
+getPrivate(endpoint: string, params?: any)
+⋮----
+postPrivate(endpoint: string, params?: any)
+⋮----
+deletePrivate(endpoint: string, params?: any)
+⋮----
+/**
+   * @private Make a HTTP request to a specific endpoint. Private endpoint API calls are automatically signed.
+   */
+private async _call(
+    method: Method,
+    endpoint: string,
+    params?: any,
+    isPublicApi?: boolean,
+): Promise<any>
+⋮----
+// Sanity check to make sure it's only ever prefixed by one forward slash
+⋮----
+// Build a request and handle signature process
+⋮----
+// Dispatch request
+⋮----
+// Throw API rejections by parsing the response code from the body
+⋮----
+/**
+   * @private generic handler to parse request exceptions
+   */
+parseException(e: any, request: AxiosRequestConfig<any>): unknown
+⋮----
+// Something happened in setting up the request that triggered an error
+⋮----
+// request made but no response received
+⋮----
+// The request was made and the server responded with a status code
+// that falls out of the range of 2xx
+⋮----
+// console.error('err: ', response?.data);
+⋮----
+// Prevent credentials from leaking into error messages
+⋮----
+/**
+   * @private sign request and set recv window
+   */
+private async signRequest<T extends object | undefined = {}>(
+    data: T,
+    _endpoint: string,
+    method: Method,
+    signMethod: SignMethod,
+): Promise<SignedRequest<T>>
+⋮----
+// It's possible to override the recv window on a per rquest level
+⋮----
+private async prepareSignParams<TParams extends object | undefined>(
+    method: Method,
+    endpoint: string,
+    signMethod: SignMethod,
+    params?: TParams,
+    isPublicApi?: true,
+  ): Promise<UnsignedRequest<TParams>>;
+⋮----
+private async prepareSignParams<TParams extends object | undefined>(
+    method: Method,
+    endpoint: string,
+    signMethod: SignMethod,
+    params?: TParams,
+    isPublicApi?: false | undefined,
+  ): Promise<SignedRequest<TParams>>;
+⋮----
+private async prepareSignParams<TParams extends object | undefined>(
+    method: Method,
+    endpoint: string,
+    signMethod: SignMethod,
+    params?: TParams,
+    isPublicApi?: boolean,
+)
+⋮----
+/** Returns an axios request object. Handles signing process automatically if this is a private API call */
+private async buildRequest(
+    method: Method,
+    endpoint: string,
+    url: string,
+    params?: any,
+    isPublicApi?: boolean,
+): Promise<AxiosRequestConfig>
+
+================
 File: src/RestClient.ts
 ================
 import { AxiosRequestConfig } from 'axios';
@@ -2309,6 +2392,22 @@ import {
   RestClientType,
 } from './lib/BaseRestClient.js';
 import { RestClientOptions } from './lib/requestUtils.js';
+import {
+  EarnAutoSavingBatchOperateRequest,
+  EarnFixedAutoReinvestUpdateRequest,
+  EarnFixedEarlyRedeemRequest,
+  EarnFixedHistoryRequest,
+  EarnFixedPositionsRequest,
+  EarnFixedProductListRequest,
+  EarnFixedSubscribeRequest,
+  EarnFlexibleAutoSubscribeOperateRequest,
+  EarnFlexibleAutoSubscribeStatusRequest,
+  EarnFlexibleHistoryRequest,
+  EarnFlexiblePositionsRequest,
+  EarnFlexibleProductListRequest,
+  EarnFlexibleRedeemRequest,
+  EarnFlexibleSubscribeRequest,
+} from './types/request/earn.types.js';
 import {
   CancelFuturesOrderRequest,
   CancelFuturesPlanOrderRequest,
@@ -2363,6 +2462,18 @@ import {
   SubSpotWalletBalancesV1Request,
   SubTransfersV1Request,
 } from './types/request/spot.types.js';
+import {
+  EarnAccountPosition,
+  EarnAutoSavingBatchStatus,
+  EarnFixedHistoryRecord,
+  EarnFixedPosition,
+  EarnFixedProduct,
+  EarnFlexibleAutoSubscribeStatus,
+  EarnFlexibleHistoryRecord,
+  EarnFlexiblePosition,
+  EarnFlexibleProduct,
+  EarnPagedList,
+} from './types/response/earn.types.js';
 import {
   FuturesAccountAsset,
   FuturesAccountHistoricOrder,
@@ -3052,6 +3163,72 @@ getFuturesAffiliateTrades(
 ⋮----
 /**
    *
+   * Finance | Earn (`newearn/cloud/v1`)
+   *
+   */
+⋮----
+getEarnAccountPosition(): Promise<APIResponse<EarnAccountPosition[]>>
+⋮----
+getFlexibleSavingProducts(
+    params: EarnFlexibleProductListRequest,
+): Promise<APIResponse<EarnPagedList<EarnFlexibleProduct>>>
+⋮----
+subscribeFlexibleSaving(
+    params: EarnFlexibleSubscribeRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+redeemFlexibleSaving(
+    params: EarnFlexibleRedeemRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+getFlexibleSavingPositions(
+    params: EarnFlexiblePositionsRequest,
+): Promise<APIResponse<EarnPagedList<EarnFlexiblePosition>>>
+⋮----
+getFlexibleSavingHistory(
+    params: EarnFlexibleHistoryRequest,
+): Promise<APIResponse<EarnPagedList<EarnFlexibleHistoryRecord>>>
+⋮----
+getFixedSavingProducts(
+    params: EarnFixedProductListRequest,
+): Promise<APIResponse<EarnPagedList<EarnFixedProduct>>>
+⋮----
+subscribeFixedSaving(
+    params: EarnFixedSubscribeRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+getFixedSavingPositions(
+    params: EarnFixedPositionsRequest,
+): Promise<APIResponse<EarnPagedList<EarnFixedPosition>>>
+⋮----
+getFixedSavingHistory(
+    params: EarnFixedHistoryRequest,
+): Promise<APIResponse<EarnPagedList<EarnFixedHistoryRecord>>>
+⋮----
+redeemFixedSavingEarly(
+    params: EarnFixedEarlyRedeemRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+updateFixedSavingAutoReinvest(
+    params: EarnFixedAutoReinvestUpdateRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+setAutoSavingBatch(
+    params: EarnAutoSavingBatchOperateRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+getAutoSavingBatchStatus(): Promise<APIResponse<EarnAutoSavingBatchStatus>>
+⋮----
+setFlexibleSavingAutoSubscribe(
+    params: EarnFlexibleAutoSubscribeOperateRequest,
+): Promise<APIResponse<boolean>>
+⋮----
+getFlexibleSavingAutoSubscribeStatus(
+    params: EarnFlexibleAutoSubscribeStatusRequest,
+): Promise<APIResponse<EarnFlexibleAutoSubscribeStatus>>
+⋮----
+/**
+   *
    * API Broker Endpoints
    *
    **/
@@ -3059,192 +3236,6 @@ getFuturesAffiliateTrades(
 getBrokerRebate(
     params?: SpotBrokerRebateRequest,
 ): Promise<APIResponse<SpotBrokerRebateResult>>
-
-================
-File: src/lib/BaseRestClient.ts
-================
-import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-// NOTE: https.Agent is Node.js-only and not available in browser environments
-// Browser builds (via webpack) exclude this module - see webpack.config.js fallback settings
-import https from 'https';
-⋮----
-import { neverGuard } from './misc-util.js';
-import {
-  APIID,
-  getRestBaseUrl,
-  RestClientOptions,
-  serializeParams,
-} from './requestUtils.js';
-import { checkWebCryptoAPISupported, signMessage } from './webCryptoAPI.js';
-⋮----
-/**
- * Used to switch how authentication/requests work under the hood
- */
-⋮----
-export type RestClientType =
-  (typeof REST_CLIENT_TYPE_ENUM)[keyof typeof REST_CLIENT_TYPE_ENUM];
-⋮----
-interface SignedRequest<T extends object | undefined = {}> {
-  originalParams: T;
-  paramsWithSign?: T & { sign: string };
-  serializedParams: string;
-  sign: string;
-  queryParamsWithSign: string;
-  timestamp: number;
-  recvWindow: number;
-}
-⋮----
-interface UnsignedRequest<T extends object | undefined = {}> {
-  originalParams: T;
-  paramsWithSign: T;
-}
-⋮----
-type SignMethod = 'bitmart';
-⋮----
-/**
- * Enables:
- * - Detailed request/response logging
- * - Full request dump in any exceptions thrown from API responses
- */
-⋮----
-// request: {
-//   url: response.config.url,
-//   method: response.config.method,
-//   data: response.config.data,
-//   headers: response.config.headers,
-// },
-⋮----
-export abstract class BaseRestClient
-⋮----
-/** Defines the client type (affecting how requests & signatures behave) */
-abstract getClientType(): RestClientType;
-⋮----
-/**
-   * Create an instance of the REST client. Pass API credentials in the object in the first parameter.
-   * @param {RestClientOptions} [restClientOptions={}] options to configure REST API connectivity
-   * @param {AxiosRequestConfig} [networkOptions={}] HTTP networking options for axios
-   */
-constructor(
-    restClientOptions: RestClientOptions = {},
-    networkOptions: AxiosRequestConfig = {},
-)
-⋮----
-/** Throw errors if any request params are empty */
-⋮----
-/** in ms == 5 minutes by default */
-⋮----
-/** inject custom rquest options based on axios specs - see axios docs for more guidance on AxiosRequestConfig: https://github.com/axios/axios#request-config */
-⋮----
-// If enabled, configure a https agent with keepAlive enabled
-// NOTE: This is Node.js-only functionality. In browser environments, this code is skipped
-// as the 'https' module is excluded via webpack fallback configuration.
-// Browser connection pooling is handled automatically by the browser itself.
-⋮----
-// Extract existing https agent parameters, if provided, to prevent the keepAlive flag from overwriting an existing https agent completely
-⋮----
-// For more advanced configuration, raise an issue on GitHub or use the "networkOptions"
-// parameter to define a custom httpsAgent with the desired properties
-⋮----
-// Throw if one of the 3 values is missing, but at least one of them is set
-⋮----
-// Check Web Crypto API support when credentials are provided and no custom sign function is used
-⋮----
-// Provide a user friendly error message if the user is using an outdated Node.js version (where Web Crypto API is not available).
-// A few users have been caught out by using the end-of-life Node.js v18 release.
-⋮----
-/**
-   * Timestamp used to sign the request. Override this method to implement your own timestamp/sync mechanism
-   */
-getSignTimestampMs(): number
-⋮----
-get(endpoint: string, params?: any)
-⋮----
-post(endpoint: string, params?: any)
-⋮----
-getPrivate(endpoint: string, params?: any)
-⋮----
-postPrivate(endpoint: string, params?: any)
-⋮----
-deletePrivate(endpoint: string, params?: any)
-⋮----
-/**
-   * @private Make a HTTP request to a specific endpoint. Private endpoint API calls are automatically signed.
-   */
-private async _call(
-    method: Method,
-    endpoint: string,
-    params?: any,
-    isPublicApi?: boolean,
-): Promise<any>
-⋮----
-// Sanity check to make sure it's only ever prefixed by one forward slash
-⋮----
-// Build a request and handle signature process
-⋮----
-// Dispatch request
-⋮----
-// Throw API rejections by parsing the response code from the body
-⋮----
-/**
-   * @private generic handler to parse request exceptions
-   */
-parseException(e: any, request: AxiosRequestConfig<any>): unknown
-⋮----
-// Something happened in setting up the request that triggered an error
-⋮----
-// request made but no response received
-⋮----
-// The request was made and the server responded with a status code
-// that falls out of the range of 2xx
-⋮----
-// console.error('err: ', response?.data);
-⋮----
-// Prevent credentials from leaking into error messages
-⋮----
-/**
-   * @private sign request and set recv window
-   */
-private async signRequest<T extends object | undefined = {}>(
-    data: T,
-    _endpoint: string,
-    method: Method,
-    signMethod: SignMethod,
-): Promise<SignedRequest<T>>
-⋮----
-// It's possible to override the recv window on a per rquest level
-⋮----
-private async prepareSignParams<TParams extends object | undefined>(
-    method: Method,
-    endpoint: string,
-    signMethod: SignMethod,
-    params?: TParams,
-    isPublicApi?: true,
-  ): Promise<UnsignedRequest<TParams>>;
-⋮----
-private async prepareSignParams<TParams extends object | undefined>(
-    method: Method,
-    endpoint: string,
-    signMethod: SignMethod,
-    params?: TParams,
-    isPublicApi?: false | undefined,
-  ): Promise<SignedRequest<TParams>>;
-⋮----
-private async prepareSignParams<TParams extends object | undefined>(
-    method: Method,
-    endpoint: string,
-    signMethod: SignMethod,
-    params?: TParams,
-    isPublicApi?: boolean,
-)
-⋮----
-/** Returns an axios request object. Handles signing process automatically if this is a private API call */
-private async buildRequest(
-    method: Method,
-    endpoint: string,
-    url: string,
-    params?: any,
-    isPublicApi?: boolean,
-): Promise<AxiosRequestConfig>
 
 ================
 File: src/lib/requestUtils.ts
@@ -3382,6 +3373,472 @@ export function isCompressedMessageEvent(
 export function isMessageEvent(msg: unknown): msg is MessageEventLike
 
 ================
+File: src/types/request/futures.types.ts
+================
+export interface FuturesKlinesRequest {
+  symbol: string;
+  start_time: number;
+  end_time: number;
+  step?: number;
+}
+⋮----
+/** Get Order Detail - symbol and order_id required. */
+export interface GetFuturesOrderRequest {
+  symbol: string;
+  order_id: string;
+  account?: 'futures' | 'copy_trading';
+}
+⋮----
+/** Cancel Order - symbol required. order_id or client_order_id for specific cancel; omit both to cancel all under symbol. */
+export interface CancelFuturesOrderRequest {
+  symbol: string;
+  order_id?: string;
+  client_order_id?: string;
+}
+⋮----
+/** Cancel Plan Order - symbol required, order_id or client_order_id for specific cancel. */
+export interface CancelFuturesPlanOrderRequest {
+  symbol: string;
+  order_id?: string;
+  client_order_id?: string;
+}
+⋮----
+/** Cancel Trail Order - symbol required, order_id for specific cancel. No client_order_id. */
+export interface CancelFuturesTrailOrderRequest {
+  symbol: string;
+  order_id?: string;
+}
+⋮----
+export interface FuturesAccountHistoricOrderRequest {
+  symbol: string;
+  start_time?: number;
+  end_time?: number;
+  account?: string;
+}
+⋮----
+export interface FuturesAccountOpenOrdersRequest {
+  symbol?: string;
+  type?: 'limit' | 'market' | 'trailing';
+  order_state?: 'all' | 'partially_filled';
+  limit?: number;
+}
+⋮----
+export interface FuturesAccountPlanOrdersRequest {
+  symbol?: string;
+  type?: 'limit' | 'market';
+  limit?: number;
+  plan_type?: 'plan' | 'profit_loss';
+}
+⋮----
+export interface FuturesAccountTradesRequest {
+  symbol?: string;
+  start_time?: number;
+  end_time?: number;
+  account?: string;
+  order_id?: number;
+  client_order_id?: string;
+}
+⋮----
+export interface FuturesAccountHistoricTransactionRequest {
+  symbol?: string;
+  flow_type?: 0 | 1 | 2 | 3 | 4 | 5;
+  start_time?: number;
+  end_time?: number;
+  page_size?: number;
+  account?: string;
+}
+⋮----
+export interface FuturesAccountTransfersRequest {
+  currency?: string;
+  time_start?: number;
+  time_end?: number;
+  page: number;
+  limit: number;
+  recvWindow?: number;
+}
+⋮----
+export interface SubmitFuturesOrderRequest {
+  symbol: string;
+  client_order_id?: string;
+  side: 1 | 2 | 3 | 4;
+  mode?: 1 | 2 | 3 | 4;
+  type?: 'limit' | 'market';
+  leverage?: string;
+  open_type?: 'cross' | 'isolated';
+  size: number;
+  price?: string;
+  preset_take_profit_price_type?: 1 | 2;
+  preset_stop_loss_price_type?: 1 | 2;
+  preset_take_profit_price?: string;
+  preset_stop_loss_price?: string;
+  stp_mode?: number;
+}
+⋮----
+export interface UpdateFuturesLimitOrderRequest {
+  symbol: string;
+  order_id?: number;
+  client_order_id?: string;
+  price?: string;
+  size?: string;
+}
+⋮----
+export interface SubmitFuturesPlanOrderRequest {
+  symbol: string;
+  type?: 'limit' | 'market' | 'take_profit' | 'stop_loss';
+  side: 1 | 2 | 3 | 4;
+  leverage: string;
+  open_type: 'cross' | 'isolated';
+  mode?: 1 | 2 | 3 | 4;
+  size: number;
+  trigger_price: string;
+  executive_price?: string;
+  price_way: 1 | 2;
+  price_type: 1 | 2;
+  plan_category?: 1 | 2;
+  preset_take_profit_price_type?: 1 | 2;
+  preset_stop_loss_price_type?: 1 | 2;
+  preset_take_profit_price?: string;
+  preset_stop_loss_price?: string;
+}
+⋮----
+export interface SubmitFuturesTransferRequest {
+  currency: string; // Only USDT is supported
+  amount: string; // Transfer amount, allowed range[0.01,10000000000]
+  type: 'spot_to_contract' | 'contract_to_spot';
+  recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+}
+⋮----
+currency: string; // Only USDT is supported
+amount: string; // Transfer amount, allowed range[0.01,10000000000]
+⋮----
+recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+⋮----
+export interface SetFuturesLeverageRequest {
+  symbol: string; // Symbol of the contract(like BTCUSDT)
+  leverage?: string; // Order leverage
+  open_type: 'cross' | 'isolated'; // Open type, required at close position
+}
+⋮----
+symbol: string; // Symbol of the contract(like BTCUSDT)
+leverage?: string; // Order leverage
+open_type: 'cross' | 'isolated'; // Open type, required at close position
+⋮----
+export interface TransferFuturesAssetsRequest {
+  requestNo: string; // UUID, unique identifier, max length 64
+  amount: string; // Transfer amount
+  currency: 'USDT'; // Currently only USDT is supported
+  subAccount: string; // Sub-Account username
+}
+⋮----
+requestNo: string; // UUID, unique identifier, max length 64
+amount: string; // Transfer amount
+currency: 'USDT'; // Currently only USDT is supported
+subAccount: string; // Sub-Account username
+⋮----
+export interface SubmitFuturesSubToMainSubFromSubRequest {
+  requestNo: string; // UUID, unique identifier, max length 64
+  amount: string; // Transfer amount
+  currency: 'USDT'; // Currently only USDT is supported
+}
+⋮----
+requestNo: string; // UUID, unique identifier, max length 64
+amount: string; // Transfer amount
+currency: 'USDT'; // Currently only USDT is supported
+⋮----
+export interface FuturesSubWalletRequest {
+  subAccount: string; // Sub-Account username
+  currency?: string; // Currency is optional
+}
+⋮----
+subAccount: string; // Sub-Account username
+currency?: string; // Currency is optional
+⋮----
+export interface FuturesSubTransfersRequest {
+  subAccount: string;
+  limit: number; // Range [1,100]
+}
+⋮----
+limit: number; // Range [1,100]
+⋮----
+export interface FuturesAffiliateRebatesRequest {
+  user_id?: number;
+  page: number;
+  size: number;
+  currency: string;
+  rebate_start_time?: number;
+  rebate_end_time?: number;
+  register_start_time?: number;
+  register_end_time?: number;
+}
+⋮----
+export interface FuturesAffiliateTradesRequest {
+  user_id?: number;
+  page: number;
+  type: 1 | 2;
+  size: number;
+  start_time: number;
+  end_time: number;
+}
+⋮----
+export interface SubmitFuturesTPSLOrderRequest {
+  symbol: string;
+  type: 'take_profit' | 'stop_loss';
+  side: 2 | 3;
+  size?: number;
+  trigger_price: string;
+  executive_price: string;
+  price_type: 1 | 2;
+  plan_category?: 1 | 2;
+  client_order_id?: string;
+  category?: 'limit' | 'market';
+}
+⋮----
+export interface UpdateFuturesPlanOrderRequest {
+  symbol: string;
+  order_id?: string;
+  trigger_price: string;
+  executive_price?: string;
+  price_type: 1 | 2;
+  type: 'limit' | 'market';
+}
+⋮----
+export interface UpdateFuturesPresetPlanOrderRequest {
+  order_id: string;
+  symbol: string;
+  preset_take_profit_price_type?: 1 | 2;
+  preset_stop_loss_price_type?: 1 | 2;
+  preset_take_profit_price?: string;
+  preset_stop_loss_price?: string;
+}
+⋮----
+export interface UpdateFuturesTPSLOrderRequest {
+  symbol: string;
+  order_id?: string;
+  client_order_id?: string;
+  trigger_price: string;
+  executive_price?: string;
+  price_type: 1 | 2;
+  plan_category?: 1 | 2;
+  category?: 'limit' | 'market';
+}
+⋮----
+export interface SubmitFuturesTrailOrderRequest {
+  symbol: string;
+  side: 1 | 2 | 3 | 4;
+  leverage: string;
+  open_type: 'cross' | 'isolated';
+  size: number;
+  activation_price: string;
+  callback_rate: string;
+  activation_price_type: 1 | 2;
+}
+⋮----
+/** GET `contract/private/affiliate/aff-customer-info` — invited user contract account assets/equity (USDT). */
+export interface FuturesAffiliateCustomerInfoRequest {
+  userId: number;
+}
+⋮----
+/** GET `contract/private/affiliate/rebate-user` — single user rebate totals. */
+export interface FuturesAffiliateRebateUserRequest {
+  cid: number;
+  start_time: number;
+  end_time: number;
+}
+⋮----
+/** GET `contract/private/affiliate/rebate-inviteUser` — paginated invited customer list. */
+export interface FuturesAffiliateRebateInviteUserRequest {
+  cid?: number;
+  start_time: number;
+  end_time: number;
+  page: number;
+  size: number;
+}
+⋮----
+/** Affiliate invited users deposit / withdrawal records (max 60 days, size max 50). */
+export interface FuturesAffiliateDepositWithdrawalListRequest {
+  page: number;
+  size: number;
+  type?: 1 | 2;
+  cid: number;
+  start_time: number;
+  end_time: number;
+}
+⋮----
+/** GET `contract/public/funding-rate-v2` — optional symbol; omit to query all pairs. */
+export interface FuturesFundingRateV2Request {
+  symbol?: string;
+}
+⋮----
+export interface FuturesAutoRepaymentRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  from_coin_code?: string;
+  type?: string;
+}
+⋮----
+export interface FuturesCrossCollateralInterestLogRequest {
+  start_time?: number;
+  end_time?: number;
+  page?: number;
+  size?: number;
+  coin_code?: string;
+}
+⋮----
+export interface FuturesAffiliateRebateApiRequest {
+  cid: number;
+  start_time: number;
+  end_time: number;
+}
+⋮----
+export interface SubmitFuturesSimulatedClaimRequest {
+  currency?: string;
+  amount?: string;
+}
+
+================
+File: src/types/websockets/client.ts
+================
+import type { ClientRequestArgs } from 'http';
+import WebSocket from 'isomorphic-ws';
+⋮----
+/**
+ * WS topics are always a string for bitmart. Some exchanges use complex objects
+ */
+export type WsTopic = string;
+⋮----
+/**
+ * Event args for subscribing/unsubscribing
+ */
+⋮----
+// export type WsTopicSubscribePrivateArgsV2 =
+//   | WsTopicSubscribePrivateInstIdArgsV2
+//   | WsTopicSubscribePrivateCoinArgsV2;
+⋮----
+// export type WsTopicSubscribeEventArgsV2 =
+//   | WsTopicSubscribePublicArgsV2
+//   | WsTopicSubscribePrivateArgsV2;
+⋮----
+/** General configuration for the WebsocketClient */
+export interface WSClientConfigurableOptions {
+  /** Your API key */
+  apiKey?: string;
+
+  /** Your API secret */
+  apiSecret?: string;
+
+  /** Your API memo (can be anything) that you included when creating this API key */
+  apiMemo?: string;
+
+  /** Define a recv window when preparing a private websocket signature. This is in milliseconds, so 5000 == 5 seconds */
+  recvWindow?: number;
+
+  /** How often to check if the connection is alive */
+  pingInterval?: number;
+
+  /** How long to wait for a pong (heartbeat reply) before assuming the connection is dead */
+  pongTimeout?: number;
+
+  /** Delay in milliseconds before respawning the connection */
+  reconnectTimeout?: number;
+
+  requestOptions?: {};
+
+  wsOptions?: {
+    protocols?: string[];
+    agent?: any;
+  } & Partial<WebSocket.ClientOptions | ClientRequestArgs>;
+
+  wsUrl?: string;
+
+  /**
+   * Default: false. If true, use the simulated trading demo environment.
+   * For V2 Futures WebSocket: wss://openapi-wsdemo-v2.bitmart.com
+   * Note: The API keys for Simulated-Environment and Prod-Environment are the same.
+   */
+  demoTrading?: boolean;
+
+  /**
+   * Allows you to provide a custom "signMessage" function, e.g. to use node's much faster createHmac method
+   *
+   * Look in the examples folder for a demonstration on using node's createHmac instead.
+   */
+  customSignMessageFn?: (message: string, secret: string) => Promise<string>;
+}
+⋮----
+/** Your API key */
+⋮----
+/** Your API secret */
+⋮----
+/** Your API memo (can be anything) that you included when creating this API key */
+⋮----
+/** Define a recv window when preparing a private websocket signature. This is in milliseconds, so 5000 == 5 seconds */
+⋮----
+/** How often to check if the connection is alive */
+⋮----
+/** How long to wait for a pong (heartbeat reply) before assuming the connection is dead */
+⋮----
+/** Delay in milliseconds before respawning the connection */
+⋮----
+/**
+   * Default: false. If true, use the simulated trading demo environment.
+   * For V2 Futures WebSocket: wss://openapi-wsdemo-v2.bitmart.com
+   * Note: The API keys for Simulated-Environment and Prod-Environment are the same.
+   */
+⋮----
+/**
+   * Allows you to provide a custom "signMessage" function, e.g. to use node's much faster createHmac method
+   *
+   * Look in the examples folder for a demonstration on using node's createHmac instead.
+   */
+⋮----
+/**
+ * WS configuration that's always defined, regardless of user configuration
+ * (usually comes from defaults if there's no user-provided values)
+ */
+export interface WebsocketClientOptions extends WSClientConfigurableOptions {
+  pingInterval: number;
+  pongTimeout: number;
+  reconnectTimeout: number;
+  recvWindow: number;
+
+  /**
+   * If true, require a "receipt" that the connection is ready for use (e.g. a specific event type)
+   */
+  requireConnectionReadyConfirmation: boolean;
+  authPrivateConnectionsOnConnect: boolean;
+  authPrivateRequests: boolean;
+  reauthWSAPIOnReconnect: boolean;
+
+  /**
+   * Whether to use native WebSocket ping/pong frames for heartbeats
+   */
+  useNativeHeartbeats: boolean;
+}
+⋮----
+/**
+   * If true, require a "receipt" that the connection is ready for use (e.g. a specific event type)
+   */
+⋮----
+/**
+   * Whether to use native WebSocket ping/pong frames for heartbeats
+   */
+⋮----
+export type WsMarket = 'spot' | 'futures';
+⋮----
+/**
+ * A midflight WS request event (e.g. subscribe to these topics).
+ *
+ * - requestKey: unique identifier for this request, if available. Can be anything as a string.
+ * - requestEvent: the raw request, as an object, that will be sent on the ws connection. This may contain multiple topics/requests in one object, if the exchange supports it.
+ */
+export interface MidflightWsRequestEvent<TEvent = object> {
+  requestKey: string;
+  requestEvent: TEvent;
+}
+
+================
 File: src/types/response/futures.types.ts
 ================
 export type FuturesMarginType = 'cross' | 'isolated';
@@ -3447,6 +3904,27 @@ export interface FuturesFundingRate {
   symbol: string;
   rate_value: string;
   expected_rate: string;
+}
+⋮----
+export interface FuturesFundingRateV2 {
+  timestamp: number;
+  symbol: string;
+  rate_value: string;
+  expected_rate: string;
+  funding_time: number;
+  funding_upper_limit: string;
+  funding_lower_limit: string;
+}
+⋮----
+/** `data` payload for GET `contract/public/funding-rate-v2`. */
+export interface FuturesFundingRateV2Response {
+  list: FuturesFundingRateV2[];
+}
+⋮----
+/** `data` payload for GET `contract/private/affiliate/aff-customer-info`. */
+export interface FuturesAffiliateCustomerInfoResponse {
+  futuresAccountAssetTotalUsdt: string;
+  futuresAccountRightUsdt: string;
 }
 ⋮----
 export interface FuturesKline {
@@ -3702,11 +4180,23 @@ export interface FuturesAffiliateRebateInviteUserRow {
 }
 ⋮----
 /** `data` payload for GET `contract/private/affiliate/rebate-inviteUser`. */
-export interface FuturesAffiliateRebateUserResponse {
+export interface FuturesAffiliateRebateInviteUserResponse {
   list: FuturesAffiliateRebateInviteUserRow[];
   page: number;
   size: number;
   total: number;
+}
+⋮----
+/** `data` payload for GET `contract/private/affiliate/rebate-user` (single user). */
+export interface FuturesAffiliateRebateUserResponse {
+  cid: number;
+  back_rate: string;
+  trading_vol_total: string;
+  trading_fee_total: string;
+  rebate_total: string;
+  trading_vol: string;
+  trading_fee: string;
+  rebate: string;
 }
 ⋮----
 export interface FuturesAffiliateDepositWithdrawalListItem {
@@ -3780,610 +4270,6 @@ export interface FuturesSimulatedClaimResponse {
   currency: string;
   amount: string;
 }
-
-================
-File: src/types/websockets/client.ts
-================
-import type { ClientRequestArgs } from 'http';
-import WebSocket from 'isomorphic-ws';
-⋮----
-/**
- * WS topics are always a string for bitmart. Some exchanges use complex objects
- */
-export type WsTopic = string;
-⋮----
-/**
- * Event args for subscribing/unsubscribing
- */
-⋮----
-// export type WsTopicSubscribePrivateArgsV2 =
-//   | WsTopicSubscribePrivateInstIdArgsV2
-//   | WsTopicSubscribePrivateCoinArgsV2;
-⋮----
-// export type WsTopicSubscribeEventArgsV2 =
-//   | WsTopicSubscribePublicArgsV2
-//   | WsTopicSubscribePrivateArgsV2;
-⋮----
-/** General configuration for the WebsocketClient */
-export interface WSClientConfigurableOptions {
-  /** Your API key */
-  apiKey?: string;
-
-  /** Your API secret */
-  apiSecret?: string;
-
-  /** Your API memo (can be anything) that you included when creating this API key */
-  apiMemo?: string;
-
-  /** Define a recv window when preparing a private websocket signature. This is in milliseconds, so 5000 == 5 seconds */
-  recvWindow?: number;
-
-  /** How often to check if the connection is alive */
-  pingInterval?: number;
-
-  /** How long to wait for a pong (heartbeat reply) before assuming the connection is dead */
-  pongTimeout?: number;
-
-  /** Delay in milliseconds before respawning the connection */
-  reconnectTimeout?: number;
-
-  requestOptions?: {};
-
-  wsOptions?: {
-    protocols?: string[];
-    agent?: any;
-  } & Partial<WebSocket.ClientOptions | ClientRequestArgs>;
-
-  wsUrl?: string;
-
-  /**
-   * Default: false. If true, use the simulated trading demo environment.
-   * For V2 Futures WebSocket: wss://openapi-wsdemo-v2.bitmart.com
-   * Note: The API keys for Simulated-Environment and Prod-Environment are the same.
-   */
-  demoTrading?: boolean;
-
-  /**
-   * Allows you to provide a custom "signMessage" function, e.g. to use node's much faster createHmac method
-   *
-   * Look in the examples folder for a demonstration on using node's createHmac instead.
-   */
-  customSignMessageFn?: (message: string, secret: string) => Promise<string>;
-}
-⋮----
-/** Your API key */
-⋮----
-/** Your API secret */
-⋮----
-/** Your API memo (can be anything) that you included when creating this API key */
-⋮----
-/** Define a recv window when preparing a private websocket signature. This is in milliseconds, so 5000 == 5 seconds */
-⋮----
-/** How often to check if the connection is alive */
-⋮----
-/** How long to wait for a pong (heartbeat reply) before assuming the connection is dead */
-⋮----
-/** Delay in milliseconds before respawning the connection */
-⋮----
-/**
-   * Default: false. If true, use the simulated trading demo environment.
-   * For V2 Futures WebSocket: wss://openapi-wsdemo-v2.bitmart.com
-   * Note: The API keys for Simulated-Environment and Prod-Environment are the same.
-   */
-⋮----
-/**
-   * Allows you to provide a custom "signMessage" function, e.g. to use node's much faster createHmac method
-   *
-   * Look in the examples folder for a demonstration on using node's createHmac instead.
-   */
-⋮----
-/**
- * WS configuration that's always defined, regardless of user configuration
- * (usually comes from defaults if there's no user-provided values)
- */
-export interface WebsocketClientOptions extends WSClientConfigurableOptions {
-  pingInterval: number;
-  pongTimeout: number;
-  reconnectTimeout: number;
-  recvWindow: number;
-
-  /**
-   * If true, require a "receipt" that the connection is ready for use (e.g. a specific event type)
-   */
-  requireConnectionReadyConfirmation: boolean;
-  authPrivateConnectionsOnConnect: boolean;
-  authPrivateRequests: boolean;
-  reauthWSAPIOnReconnect: boolean;
-
-  /**
-   * Whether to use native WebSocket ping/pong frames for heartbeats
-   */
-  useNativeHeartbeats: boolean;
-}
-⋮----
-/**
-   * If true, require a "receipt" that the connection is ready for use (e.g. a specific event type)
-   */
-⋮----
-/**
-   * Whether to use native WebSocket ping/pong frames for heartbeats
-   */
-⋮----
-export type WsMarket = 'spot' | 'futures';
-⋮----
-/**
- * A midflight WS request event (e.g. subscribe to these topics).
- *
- * - requestKey: unique identifier for this request, if available. Can be anything as a string.
- * - requestEvent: the raw request, as an object, that will be sent on the ws connection. This may contain multiple topics/requests in one object, if the exchange supports it.
- */
-export interface MidflightWsRequestEvent<TEvent = object> {
-  requestKey: string;
-  requestEvent: TEvent;
-}
-
-================
-File: src/FuturesClientV2.ts
-================
-import { AxiosRequestConfig } from 'axios';
-⋮----
-import {
-  BaseRestClient,
-  REST_CLIENT_TYPE_ENUM,
-  RestClientType,
-} from './lib/BaseRestClient.js';
-import { RestClientOptions } from './lib/requestUtils.js';
-import {
-  CancelFuturesOrderRequest,
-  CancelFuturesPlanOrderRequest,
-  CancelFuturesTrailOrderRequest,
-  FuturesAccountHistoricOrderRequest,
-  FuturesAccountHistoricTransactionRequest,
-  FuturesAccountOpenOrdersRequest,
-  FuturesAccountPlanOrdersRequest,
-  FuturesAccountTradesRequest,
-  FuturesAccountTransfersRequest,
-  FuturesAffiliateDepositWithdrawalListRequest,
-  FuturesAffiliateRebateApiRequest,
-  FuturesAffiliateRebatesRequest,
-  FuturesAffiliateRebateUserRequest,
-  FuturesAffiliateTradesRequest,
-  FuturesAutoRepaymentRequest,
-  FuturesCrossCollateralInterestLogRequest,
-  FuturesKlinesRequest,
-  FuturesSubTransfersRequest,
-  FuturesSubWalletRequest,
-  GetFuturesOrderRequest,
-  SetFuturesLeverageRequest,
-  SubmitFuturesOrderRequest,
-  SubmitFuturesPlanOrderRequest,
-  SubmitFuturesSimulatedClaimRequest,
-  SubmitFuturesSubToMainSubFromSubRequest,
-  SubmitFuturesTPSLOrderRequest,
-  SubmitFuturesTrailOrderRequest,
-  SubmitFuturesTransferRequest,
-  TransferFuturesAssetsRequest,
-  UpdateFuturesLimitOrderRequest,
-  UpdateFuturesPlanOrderRequest,
-  UpdateFuturesPresetPlanOrderRequest,
-  UpdateFuturesTPSLOrderRequest,
-} from './types/request/futures.types.js';
-import {
-  FuturesAccountAsset,
-  FuturesAccountHistoricOrder,
-  FuturesAccountHistoricTransaction,
-  FuturesAccountOpenOrder,
-  FuturesAccountOrder,
-  FuturesAccountPlanOrders,
-  FuturesAccountPosition,
-  FuturesAccountPositionV2,
-  FuturesAccountSetLeverageResult,
-  FuturesAccountSubTransfer,
-  FuturesAccountTrade,
-  FuturesAccountTransfer,
-  FuturesAffiliateDepositWithdrawalListResult,
-  FuturesAffiliateRebateApiResponse,
-  FuturesAffiliateRebateUserResponse,
-  FuturesAutoRepaymentApiResponse,
-  FuturesContractDepth,
-  FuturesContractDetails,
-  FuturesCrossCollateralInterestLogApiResponse,
-  FuturesFundingRate,
-  FuturesFundingRateHistory,
-  FuturesKline,
-  FuturesLeverageBracketRule,
-  FuturesMarketTrade,
-  FuturesOpenInterest,
-  FuturesOrderSubmitResult,
-  FuturesSimulatedClaimResponse,
-  FuturesTransferSubmitResult,
-  PositionRisk,
-} from './types/response/futures.types.js';
-import {
-  AccountCurrencyBalanceV1,
-  APIResponse,
-} from './types/response/shared.types.js';
-import { ServiceStatus } from './types/response/spot.types.js';
-⋮----
-/**
- * REST API client for Bitmart's V2 Futures APIs via the "api-cloud-v2.bitmart.com" domain
- */
-export class FuturesClientV2 extends BaseRestClient
-⋮----
-constructor(
-    restClientOptions: RestClientOptions = {},
-    requestOptions: AxiosRequestConfig = {},
-)
-⋮----
-getClientType(): RestClientType
-⋮----
-/**
-   *
-   * System Status Endpoints
-   *
-   **/
-⋮----
-getSystemTime(): Promise<APIResponse<
-⋮----
-getSystemStatus(): Promise<APIResponse<
-⋮----
-/**
-   *
-   *****************
-   * USD-M Futures V2 *
-   *****************
-   *
-   */
-⋮----
-/**
-   *
-   * Futures Market Data
-   *
-   */
-⋮----
-/**
-   * Get a list of all symbols, including most recent price, rules (min/max precision/volume/etc) and other metrics (funding rate, open interest, contract expiry, etc).
-   */
-getFuturesContractDetails(params?: {
-    symbol?: string;
-}): Promise<APIResponse<
-⋮----
-getFuturesContractDepth(params: {
-    symbol: string;
-}): Promise<APIResponse<FuturesContractDepth>>
-⋮----
-getFuturesMarketTrade(params: {
-    symbol: string;
-    limit?: number; // Default 50; max 100
-}): Promise<APIResponse<FuturesMarketTrade[]>>
-⋮----
-limit?: number; // Default 50; max 100
-⋮----
-getFuturesOpenInterest(params: {
-    symbol: string;
-}): Promise<APIResponse<FuturesOpenInterest>>
-⋮----
-getFuturesFundingRate(params: {
-    symbol: string;
-}): Promise<APIResponse<FuturesFundingRate>>
-⋮----
-getFuturesKlines(
-    params: FuturesKlinesRequest,
-): Promise<APIResponse<FuturesKline[]>>
-⋮----
-getFuturesMarkPriceKlines(
-    params: FuturesKlinesRequest,
-): Promise<APIResponse<FuturesKline[]>>
-⋮----
-getFuturesFundingRateHistory(params: {
-    symbol: string;
-    limit?: string;
-  }): Promise<
-    APIResponse<{
-      list: FuturesFundingRateHistory[];
-    }>
-  > {
-    return this.get('contract/public/funding-rate-history', params);
-⋮----
-/**
-   * Get current leverage risk limit for a specified contract
-   * @param params Optional parameters including symbol
-   * @returns Promise with leverage bracket information
-   */
-getFuturesLeverageBracket(params?: { symbol?: string }): Promise<
-    APIResponse<{
-      rules: FuturesLeverageBracketRule[];
-    }>
-  > {
-    return this.get('contract/public/leverage-bracket', params);
-⋮----
-/**
-   *
-   * Futures Account Data
-   *
-   */
-⋮----
-getFuturesAccountAssets(): Promise<APIResponse<FuturesAccountAsset[]>>
-⋮----
-/**
-   *
-   * Futures Trading
-   *
-   */
-⋮----
-getFuturesTradeFeeRate(params: { symbol: string }): Promise<
-    APIResponse<{
-      symbol: string;
-      taker_fee_rate: string;
-      maker_fee_rate: string;
-    }>
-  > {
-    return this.getPrivate('contract/private/trade-fee-rate', params);
-⋮----
-getFuturesAccountOrder(
-    params: GetFuturesOrderRequest,
-): Promise<APIResponse<FuturesAccountOrder>>
-⋮----
-getFuturesAccountOrderHistory(
-    params: FuturesAccountHistoricOrderRequest,
-): Promise<APIResponse<FuturesAccountHistoricOrder>>
-⋮----
-getFuturesAccountOpenOrders(
-    params?: FuturesAccountOpenOrdersRequest,
-): Promise<APIResponse<FuturesAccountOpenOrder[]>>
-⋮----
-getFuturesAccountPlanOrders(
-    params?: FuturesAccountPlanOrdersRequest,
-): Promise<APIResponse<FuturesAccountPlanOrders[]>>
-⋮----
-getFuturesAccountPositions(params?: {
-    symbol?: string;
-    account?: string;
-}): Promise<APIResponse<FuturesAccountPosition[]>>
-⋮----
-getFuturesAccountPositionsV2(params?: {
-    symbol?: string;
-    account?: string;
-}): Promise<APIResponse<FuturesAccountPositionV2[]>>
-⋮----
-/**
-   * Get current position risk details
-   */
-getPositionRiskDetails(params?: {
-    symbol?: string;
-    account?: string;
-}): Promise<APIResponse<PositionRisk[]>>
-⋮----
-getFuturesAccountTrades(
-    params: FuturesAccountTradesRequest,
-): Promise<APIResponse<FuturesAccountTrade[]>>
-⋮----
-getFuturesAccountTransactionHistory(
-    params: FuturesAccountHistoricTransactionRequest,
-): Promise<APIResponse<FuturesAccountHistoricTransaction[]>>
-⋮----
-/**
-   * Query auto repayment records (KEYED). Defaults to last 7 days if times omitted; max 20 records per request.
-   */
-getFuturesAutoRepayment(
-    params?: FuturesAutoRepaymentRequest,
-): Promise<FuturesAutoRepaymentApiResponse>
-⋮----
-/**
-   * Query cross margin interest accrual logs (KEYED). Defaults to last 7 days; max interval 90 days; max 20 records per request.
-   */
-getFuturesCrossCollateralInterestLog(
-    params?: FuturesCrossCollateralInterestLogRequest,
-): Promise<FuturesCrossCollateralInterestLogApiResponse>
-⋮----
-getFuturesTransfers(params: FuturesAccountTransfersRequest): Promise<
-    APIResponse<{
-      records: FuturesAccountTransfer[];
-    }>
-  > {
-    return this.getPrivate('account/v1/transfer-contract-list', params);
-⋮----
-submitFuturesOrder(
-    params: SubmitFuturesOrderRequest,
-): Promise<APIResponse<FuturesOrderSubmitResult>>
-⋮----
-updateFuturesLimitOrder(params: UpdateFuturesLimitOrderRequest): Promise<
-    APIResponse<{
-      order_id: number;
-      client_order_id?: string;
-    }>
-  > {
-    return this.postPrivate('contract/private/modify-limit-order', params);
-⋮----
-cancelFuturesOrder(
-    params: CancelFuturesOrderRequest,
-): Promise<APIResponse<any>>
-⋮----
-cancelAllFuturesOrders(params: {
-    symbol: string;
-}): Promise<APIResponse<any>>
-⋮----
-cancelAllFuturesOrdersAfter(params: {
-    timeout: number;
-    symbol: string;
-}): Promise<APIResponse<any>>
-⋮----
-submitFuturesPlanOrder(params: SubmitFuturesPlanOrderRequest): Promise<
-    APIResponse<{
-      order_id: number;
-    }>
-  > {
-    return this.postPrivate('contract/private/submit-plan-order', params);
-⋮----
-cancelFuturesPlanOrder(
-    params: CancelFuturesPlanOrderRequest,
-): Promise<APIResponse<any>>
-⋮----
-submitFuturesTransfer(
-    params: SubmitFuturesTransferRequest,
-): Promise<APIResponse<FuturesTransferSubmitResult>>
-⋮----
-setFuturesLeverage(
-    params: SetFuturesLeverageRequest,
-): Promise<APIResponse<FuturesAccountSetLeverageResult>>
-⋮----
-submitFuturesTPSLOrder(params: SubmitFuturesTPSLOrderRequest): Promise<
-    APIResponse<{
-      order_id: string;
-      client_order_id?: string;
-    }>
-  > {
-    return this.postPrivate('contract/private/submit-tp-sl-order', params);
-⋮----
-updateFuturesPlanOrder(params: UpdateFuturesPlanOrderRequest): Promise<
-    APIResponse<{
-      order_id: string;
-    }>
-  > {
-    return this.postPrivate('contract/private/modify-plan-order', params);
-⋮----
-updateFuturesPresetPlanOrder(
-    params: UpdateFuturesPresetPlanOrderRequest,
-  ): Promise<
-    APIResponse<{
-      order_id: string;
-    }>
-  > {
-    return this.postPrivate(
-      'contract/private/modify-preset-plan-order',
-      params,
-    );
-⋮----
-updateFuturesTPSLOrder(params: UpdateFuturesTPSLOrderRequest): Promise<
-    APIResponse<{
-      order_id: string;
-    }>
-  > {
-    return this.postPrivate('contract/private/modify-tp-sl-order', params);
-⋮----
-submitFuturesTrailOrder(params: SubmitFuturesTrailOrderRequest): Promise<
-    APIResponse<{
-      order_id: number;
-    }>
-  > {
-    return this.postPrivate('contract/private/submit-trail-order', params);
-⋮----
-cancelFuturesTrailOrder(
-    params: CancelFuturesTrailOrderRequest,
-): Promise<APIResponse<any>>
-⋮----
-/**
-   * Set position mode (hedge_mode or one_way_mode)
-   */
-setPositionMode(params: {
-    position_mode: 'hedge_mode' | 'one_way_mode';
-}): Promise<APIResponse<
-⋮----
-/**
-   * Get current position mode
-   */
-getPositionMode(): Promise<
-    APIResponse<{ position_mode: 'hedge_mode' | 'one_way_mode' }>
-  > {
-    return this.getPrivate('contract/private/get-position-mode');
-⋮----
-/**
-   *
-   * Futures Sub-Account Endpoints
-   *
-   */
-⋮----
-submitFuturesSubToMainTransferFromMain(
-    params: TransferFuturesAssetsRequest,
-): Promise<APIResponse<any>>
-⋮----
-submitFuturesMainToSubTransferFromMain(
-    params: TransferFuturesAssetsRequest,
-): Promise<APIResponse<any>>
-⋮----
-submitFuturesSubToMainSubFromSub(
-    params: SubmitFuturesSubToMainSubFromSubRequest,
-): Promise<APIResponse<any>>
-⋮----
-getFuturesSubWallet(params?: FuturesSubWalletRequest): Promise<
-    APIResponse<{
-      wallet: AccountCurrencyBalanceV1[];
-    }>
-  > {
-    return this.getPrivate(
-      'account/contract/sub-account/main/v1/wallet',
-      params,
-    );
-⋮----
-getFuturesSubTransfers(
-    params: FuturesSubTransfersRequest,
-): Promise<APIResponse<FuturesAccountSubTransfer[]>>
-⋮----
-getFuturesSubTransferHistory(params: {
-    limit: number; // Range [1,100]
-}): Promise<APIResponse<FuturesAccountSubTransfer[]>>
-⋮----
-limit: number; // Range [1,100]
-⋮----
-/**
-   *
-   * Futures Affiliate Endpoints
-   *
-   */
-⋮----
-getFuturesAffiliateRebates(
-    params: FuturesAffiliateRebatesRequest,
-): Promise<APIResponse<any>>
-⋮----
-getFuturesAffiliateTrades(
-    params: FuturesAffiliateTradesRequest,
-): Promise<APIResponse<any>>
-⋮----
-/**
-   * Get invited customer list (KEYED)
-   * Used by agents to query rebate information of invited users within a specified time range.
-   * Feature: Query up to 60 days of data; list entries include `accountAssetTotal` (exchange update 2026-04-07).
-   */
-getFuturesAffiliateRebateUser(
-    params: FuturesAffiliateRebateUserRequest,
-): Promise<APIResponse<FuturesAffiliateRebateUserResponse>>
-⋮----
-/**
-   * Get API Rebate Data (KEYED)
-   * Used for API affiliates to query contract API rebate data within a certain time range
-   * Feature: Query up to 60 days of data
-   */
-getFuturesAffiliateRebateApi(
-    params: FuturesAffiliateRebateApiRequest,
-): Promise<APIResponse<FuturesAffiliateRebateApiResponse>>
-⋮----
-/**
-   * Deposit and withdrawal information of invited users (KEYED)
-   * Feature: Query up to 60 days; max 50 records per page (exchange update 2026-04-07).
-   */
-getFuturesAffiliateDepositWithdrawalList(
-    params: FuturesAffiliateDepositWithdrawalListRequest,
-): Promise<FuturesAffiliateDepositWithdrawalListResult>
-⋮----
-/**
-   * Simulated Claim (SIGNED)
-   * Add available funds to the futures account (Only available in the Simulated-Environment)
-   *
-   * Note: This endpoint is only available in the Simulated Trading environment.
-   * To use this endpoint, create a client instance with demoTrading: true
-   * Example:
-   *   const simulatedClient = new FuturesClientV2({
-   *     apiKey: 'your-api-key',
-   *     apiSecret: 'your-api-secret',
-   *     apiMemo: 'your-api-memo',
-   *     demoTrading: true
-   *   });
-   *
-   * Alternatively, you can manually set baseUrl: 'https://demo-api-cloud-v2.bitmart.com'
-   */
-submitFuturesSimulatedClaim(
-    params?: SubmitFuturesSimulatedClaimRequest,
-): Promise<APIResponse<FuturesSimulatedClaimResponse>>
 
 ================
 File: src/lib/BaseWSClient.ts
@@ -5216,6 +5102,499 @@ private arrangeTopicsIntoWsKeyGroups(
 // Backwards comaptibility with how old subscribe method worked:
 
 ================
+File: src/FuturesClientV2.ts
+================
+import { AxiosRequestConfig } from 'axios';
+⋮----
+import {
+  BaseRestClient,
+  REST_CLIENT_TYPE_ENUM,
+  RestClientType,
+} from './lib/BaseRestClient.js';
+import { RestClientOptions } from './lib/requestUtils.js';
+import {
+  CancelFuturesOrderRequest,
+  CancelFuturesPlanOrderRequest,
+  CancelFuturesTrailOrderRequest,
+  FuturesAccountHistoricOrderRequest,
+  FuturesAccountHistoricTransactionRequest,
+  FuturesAccountOpenOrdersRequest,
+  FuturesAccountPlanOrdersRequest,
+  FuturesAccountTradesRequest,
+  FuturesAccountTransfersRequest,
+  FuturesAffiliateCustomerInfoRequest,
+  FuturesAffiliateDepositWithdrawalListRequest,
+  FuturesAffiliateRebateApiRequest,
+  FuturesAffiliateRebateInviteUserRequest,
+  FuturesAffiliateRebatesRequest,
+  FuturesAffiliateRebateUserRequest,
+  FuturesAffiliateTradesRequest,
+  FuturesAutoRepaymentRequest,
+  FuturesCrossCollateralInterestLogRequest,
+  FuturesFundingRateV2Request,
+  FuturesKlinesRequest,
+  FuturesSubTransfersRequest,
+  FuturesSubWalletRequest,
+  GetFuturesOrderRequest,
+  SetFuturesLeverageRequest,
+  SubmitFuturesOrderRequest,
+  SubmitFuturesPlanOrderRequest,
+  SubmitFuturesSimulatedClaimRequest,
+  SubmitFuturesSubToMainSubFromSubRequest,
+  SubmitFuturesTPSLOrderRequest,
+  SubmitFuturesTrailOrderRequest,
+  SubmitFuturesTransferRequest,
+  TransferFuturesAssetsRequest,
+  UpdateFuturesLimitOrderRequest,
+  UpdateFuturesPlanOrderRequest,
+  UpdateFuturesPresetPlanOrderRequest,
+  UpdateFuturesTPSLOrderRequest,
+} from './types/request/futures.types.js';
+import {
+  FuturesAccountAsset,
+  FuturesAccountHistoricOrder,
+  FuturesAccountHistoricTransaction,
+  FuturesAccountOpenOrder,
+  FuturesAccountOrder,
+  FuturesAccountPlanOrders,
+  FuturesAccountPosition,
+  FuturesAccountPositionV2,
+  FuturesAccountSetLeverageResult,
+  FuturesAccountSubTransfer,
+  FuturesAccountTrade,
+  FuturesAccountTransfer,
+  FuturesAffiliateCustomerInfoResponse,
+  FuturesAffiliateDepositWithdrawalListResult,
+  FuturesAffiliateRebateApiResponse,
+  FuturesAffiliateRebateInviteUserResponse,
+  FuturesAffiliateRebateUserResponse,
+  FuturesAutoRepaymentApiResponse,
+  FuturesContractDepth,
+  FuturesContractDetails,
+  FuturesCrossCollateralInterestLogApiResponse,
+  FuturesFundingRate,
+  FuturesFundingRateHistory,
+  FuturesFundingRateV2Response,
+  FuturesKline,
+  FuturesLeverageBracketRule,
+  FuturesMarketTrade,
+  FuturesOpenInterest,
+  FuturesOrderSubmitResult,
+  FuturesSimulatedClaimResponse,
+  FuturesTransferSubmitResult,
+  PositionRisk,
+} from './types/response/futures.types.js';
+import {
+  AccountCurrencyBalanceV1,
+  APIResponse,
+} from './types/response/shared.types.js';
+import { ServiceStatus } from './types/response/spot.types.js';
+⋮----
+/**
+ * REST API client for Bitmart's V2 Futures APIs via the "api-cloud-v2.bitmart.com" domain
+ */
+export class FuturesClientV2 extends BaseRestClient
+⋮----
+constructor(
+    restClientOptions: RestClientOptions = {},
+    requestOptions: AxiosRequestConfig = {},
+)
+⋮----
+getClientType(): RestClientType
+⋮----
+/**
+   *
+   * System Status Endpoints
+   *
+   **/
+⋮----
+getSystemTime(): Promise<APIResponse<
+⋮----
+getSystemStatus(): Promise<APIResponse<
+⋮----
+/**
+   *
+   *****************
+   * USD-M Futures V2 *
+   *****************
+   *
+   */
+⋮----
+/**
+   *
+   * Futures Market Data
+   *
+   */
+⋮----
+/**
+   * Get a list of all symbols, including most recent price, rules (min/max precision/volume/etc) and other metrics (funding rate, open interest, contract expiry, etc).
+   */
+getFuturesContractDetails(params?: {
+    symbol?: string;
+}): Promise<APIResponse<
+⋮----
+getFuturesContractDepth(params: {
+    symbol: string;
+}): Promise<APIResponse<FuturesContractDepth>>
+⋮----
+getFuturesMarketTrade(params: {
+    symbol: string;
+    limit?: number; // Default 50; max 100
+}): Promise<APIResponse<FuturesMarketTrade[]>>
+⋮----
+limit?: number; // Default 50; max 100
+⋮----
+getFuturesOpenInterest(params: {
+    symbol: string;
+}): Promise<APIResponse<FuturesOpenInterest>>
+⋮----
+getFuturesFundingRate(params: {
+    symbol: string;
+}): Promise<APIResponse<FuturesFundingRate>>
+⋮----
+/**
+   * Current funding rate for one or all contract pairs.
+   * GET `contract/public/funding-rate-v2`
+   */
+getFuturesFundingRateV2(
+    params?: FuturesFundingRateV2Request,
+): Promise<APIResponse<FuturesFundingRateV2Response>>
+⋮----
+getFuturesKlines(
+    params: FuturesKlinesRequest,
+): Promise<APIResponse<FuturesKline[]>>
+⋮----
+getFuturesMarkPriceKlines(
+    params: FuturesKlinesRequest,
+): Promise<APIResponse<FuturesKline[]>>
+⋮----
+getFuturesFundingRateHistory(params: {
+    symbol: string;
+    limit?: string;
+  }): Promise<
+    APIResponse<{
+      list: FuturesFundingRateHistory[];
+    }>
+  > {
+    return this.get('contract/public/funding-rate-history', params);
+⋮----
+/**
+   * Get current leverage risk limit for a specified contract
+   * @param params Optional parameters including symbol
+   * @returns Promise with leverage bracket information
+   */
+getFuturesLeverageBracket(params?: { symbol?: string }): Promise<
+    APIResponse<{
+      rules: FuturesLeverageBracketRule[];
+    }>
+  > {
+    return this.get('contract/public/leverage-bracket', params);
+⋮----
+/**
+   *
+   * Futures Account Data
+   *
+   */
+⋮----
+getFuturesAccountAssets(): Promise<APIResponse<FuturesAccountAsset[]>>
+⋮----
+/**
+   *
+   * Futures Trading
+   *
+   */
+⋮----
+getFuturesTradeFeeRate(params: { symbol: string }): Promise<
+    APIResponse<{
+      symbol: string;
+      taker_fee_rate: string;
+      maker_fee_rate: string;
+    }>
+  > {
+    return this.getPrivate('contract/private/trade-fee-rate', params);
+⋮----
+getFuturesAccountOrder(
+    params: GetFuturesOrderRequest,
+): Promise<APIResponse<FuturesAccountOrder>>
+⋮----
+getFuturesAccountOrderHistory(
+    params: FuturesAccountHistoricOrderRequest,
+): Promise<APIResponse<FuturesAccountHistoricOrder>>
+⋮----
+getFuturesAccountOpenOrders(
+    params?: FuturesAccountOpenOrdersRequest,
+): Promise<APIResponse<FuturesAccountOpenOrder[]>>
+⋮----
+getFuturesAccountPlanOrders(
+    params?: FuturesAccountPlanOrdersRequest,
+): Promise<APIResponse<FuturesAccountPlanOrders[]>>
+⋮----
+getFuturesAccountPositions(params?: {
+    symbol?: string;
+    account?: string;
+}): Promise<APIResponse<FuturesAccountPosition[]>>
+⋮----
+getFuturesAccountPositionsV2(params?: {
+    symbol?: string;
+    account?: string;
+}): Promise<APIResponse<FuturesAccountPositionV2[]>>
+⋮----
+/**
+   * Get current position risk details
+   */
+getPositionRiskDetails(params?: {
+    symbol?: string;
+    account?: string;
+}): Promise<APIResponse<PositionRisk[]>>
+⋮----
+getFuturesAccountTrades(
+    params: FuturesAccountTradesRequest,
+): Promise<APIResponse<FuturesAccountTrade[]>>
+⋮----
+getFuturesAccountTransactionHistory(
+    params: FuturesAccountHistoricTransactionRequest,
+): Promise<APIResponse<FuturesAccountHistoricTransaction[]>>
+⋮----
+/**
+   * Query auto repayment records (KEYED). Defaults to last 7 days if times omitted; max 20 records per request.
+   */
+getFuturesAutoRepayment(
+    params?: FuturesAutoRepaymentRequest,
+): Promise<FuturesAutoRepaymentApiResponse>
+⋮----
+/**
+   * Query cross margin interest accrual logs (KEYED). Defaults to last 7 days; max interval 90 days; max 20 records per request.
+   */
+getFuturesCrossCollateralInterestLog(
+    params?: FuturesCrossCollateralInterestLogRequest,
+): Promise<FuturesCrossCollateralInterestLogApiResponse>
+⋮----
+getFuturesTransfers(params: FuturesAccountTransfersRequest): Promise<
+    APIResponse<{
+      records: FuturesAccountTransfer[];
+    }>
+  > {
+    return this.getPrivate('account/v1/transfer-contract-list', params);
+⋮----
+submitFuturesOrder(
+    params: SubmitFuturesOrderRequest,
+): Promise<APIResponse<FuturesOrderSubmitResult>>
+⋮----
+updateFuturesLimitOrder(params: UpdateFuturesLimitOrderRequest): Promise<
+    APIResponse<{
+      order_id: number;
+      client_order_id?: string;
+    }>
+  > {
+    return this.postPrivate('contract/private/modify-limit-order', params);
+⋮----
+cancelFuturesOrder(
+    params: CancelFuturesOrderRequest,
+): Promise<APIResponse<any>>
+⋮----
+cancelAllFuturesOrders(params: {
+    symbol: string;
+}): Promise<APIResponse<any>>
+⋮----
+cancelAllFuturesOrdersAfter(params: {
+    timeout: number;
+    symbol: string;
+}): Promise<APIResponse<any>>
+⋮----
+submitFuturesPlanOrder(params: SubmitFuturesPlanOrderRequest): Promise<
+    APIResponse<{
+      order_id: number;
+    }>
+  > {
+    return this.postPrivate('contract/private/submit-plan-order', params);
+⋮----
+cancelFuturesPlanOrder(
+    params: CancelFuturesPlanOrderRequest,
+): Promise<APIResponse<any>>
+⋮----
+submitFuturesTransfer(
+    params: SubmitFuturesTransferRequest,
+): Promise<APIResponse<FuturesTransferSubmitResult>>
+⋮----
+setFuturesLeverage(
+    params: SetFuturesLeverageRequest,
+): Promise<APIResponse<FuturesAccountSetLeverageResult>>
+⋮----
+submitFuturesTPSLOrder(params: SubmitFuturesTPSLOrderRequest): Promise<
+    APIResponse<{
+      order_id: string;
+      client_order_id?: string;
+    }>
+  > {
+    return this.postPrivate('contract/private/submit-tp-sl-order', params);
+⋮----
+updateFuturesPlanOrder(params: UpdateFuturesPlanOrderRequest): Promise<
+    APIResponse<{
+      order_id: string;
+    }>
+  > {
+    return this.postPrivate('contract/private/modify-plan-order', params);
+⋮----
+updateFuturesPresetPlanOrder(
+    params: UpdateFuturesPresetPlanOrderRequest,
+  ): Promise<
+    APIResponse<{
+      order_id: string;
+    }>
+  > {
+    return this.postPrivate(
+      'contract/private/modify-preset-plan-order',
+      params,
+    );
+⋮----
+updateFuturesTPSLOrder(params: UpdateFuturesTPSLOrderRequest): Promise<
+    APIResponse<{
+      order_id: string;
+    }>
+  > {
+    return this.postPrivate('contract/private/modify-tp-sl-order', params);
+⋮----
+submitFuturesTrailOrder(params: SubmitFuturesTrailOrderRequest): Promise<
+    APIResponse<{
+      order_id: number;
+    }>
+  > {
+    return this.postPrivate('contract/private/submit-trail-order', params);
+⋮----
+cancelFuturesTrailOrder(
+    params: CancelFuturesTrailOrderRequest,
+): Promise<APIResponse<any>>
+⋮----
+/**
+   * Set position mode (hedge_mode or one_way_mode)
+   */
+setPositionMode(params: {
+    position_mode: 'hedge_mode' | 'one_way_mode';
+}): Promise<APIResponse<
+⋮----
+/**
+   * Get current position mode
+   */
+getPositionMode(): Promise<
+    APIResponse<{ position_mode: 'hedge_mode' | 'one_way_mode' }>
+  > {
+    return this.getPrivate('contract/private/get-position-mode');
+⋮----
+/**
+   *
+   * Futures Sub-Account Endpoints
+   *
+   */
+⋮----
+submitFuturesSubToMainTransferFromMain(
+    params: TransferFuturesAssetsRequest,
+): Promise<APIResponse<any>>
+⋮----
+submitFuturesMainToSubTransferFromMain(
+    params: TransferFuturesAssetsRequest,
+): Promise<APIResponse<any>>
+⋮----
+submitFuturesSubToMainSubFromSub(
+    params: SubmitFuturesSubToMainSubFromSubRequest,
+): Promise<APIResponse<any>>
+⋮----
+getFuturesSubWallet(params?: FuturesSubWalletRequest): Promise<
+    APIResponse<{
+      wallet: AccountCurrencyBalanceV1[];
+    }>
+  > {
+    return this.getPrivate(
+      'account/contract/sub-account/main/v1/wallet',
+      params,
+    );
+⋮----
+getFuturesSubTransfers(
+    params: FuturesSubTransfersRequest,
+): Promise<APIResponse<FuturesAccountSubTransfer[]>>
+⋮----
+getFuturesSubTransferHistory(params: {
+    limit: number; // Range [1,100]
+}): Promise<APIResponse<FuturesAccountSubTransfer[]>>
+⋮----
+limit: number; // Range [1,100]
+⋮----
+/**
+   *
+   * Futures Affiliate Endpoints
+   *
+   */
+⋮----
+getFuturesAffiliateRebates(
+    params: FuturesAffiliateRebatesRequest,
+): Promise<APIResponse<any>>
+⋮----
+getFuturesAffiliateTrades(
+    params: FuturesAffiliateTradesRequest,
+): Promise<APIResponse<any>>
+⋮----
+/**
+   * Get single user rebate data (KEYED)
+   * GET `contract/private/affiliate/rebate-user`
+   */
+getFuturesAffiliateRebateUser(
+    params: FuturesAffiliateRebateUserRequest,
+): Promise<APIResponse<FuturesAffiliateRebateUserResponse>>
+⋮----
+/**
+   * Invited user contract account total assets and equity (USDT).
+   * GET `contract/private/affiliate/aff-customer-info`
+   */
+getFuturesAffiliateCustomerInfo(
+    params: FuturesAffiliateCustomerInfoRequest,
+): Promise<APIResponse<FuturesAffiliateCustomerInfoResponse>>
+⋮----
+/**
+   * Get invited customer list (KEYED)
+   * GET `contract/private/affiliate/rebate-inviteUser`
+   * Feature: list entries include `accountAssetTotal` (exchange update 2026-04-07).
+   */
+getFuturesAffiliateRebateInviteUser(
+    params: FuturesAffiliateRebateInviteUserRequest,
+): Promise<APIResponse<FuturesAffiliateRebateInviteUserResponse>>
+⋮----
+/**
+   * Get API Rebate Data (KEYED)
+   * Used for API affiliates to query contract API rebate data within a certain time range
+   * Feature: Query up to 60 days of data
+   */
+getFuturesAffiliateRebateApi(
+    params: FuturesAffiliateRebateApiRequest,
+): Promise<APIResponse<FuturesAffiliateRebateApiResponse>>
+⋮----
+/**
+   * Deposit and withdrawal information of invited users (KEYED)
+   * Feature: Query up to 60 days; max 50 records per page (exchange update 2026-04-07).
+   */
+getFuturesAffiliateDepositWithdrawalList(
+    params: FuturesAffiliateDepositWithdrawalListRequest,
+): Promise<FuturesAffiliateDepositWithdrawalListResult>
+⋮----
+/**
+   * Simulated Claim (SIGNED)
+   * Add available funds to the futures account (Only available in the Simulated-Environment)
+   *
+   * Note: This endpoint is only available in the Simulated Trading environment.
+   * To use this endpoint, create a client instance with demoTrading: true
+   * Example:
+   *   const simulatedClient = new FuturesClientV2({
+   *     apiKey: 'your-api-key',
+   *     apiSecret: 'your-api-secret',
+   *     apiMemo: 'your-api-memo',
+   *     demoTrading: true
+   *   });
+   *
+   * Alternatively, you can manually set baseUrl: 'https://demo-api-cloud-v2.bitmart.com'
+   */
+submitFuturesSimulatedClaim(
+    params?: SubmitFuturesSimulatedClaimRequest,
+): Promise<APIResponse<FuturesSimulatedClaimResponse>>
+
+================
 File: README.md
 ================
 # Node.js & JavaScript SDK for BitMart REST API & WebSockets
@@ -5734,7 +6113,7 @@ File: package.json
 ================
 {
   "name": "bitmart-api",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Complete & robust Node.js SDK for BitMart's REST APIs and WebSockets, with TypeScript declarations.",
   "scripts": {
     "clean": "rm -rf dist/*",
