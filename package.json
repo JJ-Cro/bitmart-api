@@ -1,6 +1,6 @@
 {
   "name": "bitmart-api",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Complete & robust Node.js SDK for BitMart's REST APIs and WebSockets, with TypeScript declarations.",
   "scripts": {
     "clean": "rm -rf dist/*",
@@ -47,9 +47,7 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
-  },
-  "optionalDependencies": {
+    "typescript": "^5.7.3",
     "webpack": "^5.0.0",
     "webpack-bundle-analyzer": "^5.1.1",
     "webpack-cli": "^4.0.0"
