@@ -7,6 +7,7 @@
 [![last commit](https://img.shields.io/github/last-commit/tiagosiebler/bitmart-api)][1]
 [![CodeFactor](https://www.codefactor.io/repository/github/tiagosiebler/bitmart-api/badge)](https://www.codefactor.io/repository/github/tiagosiebler/bitmart-api)
 [![Telegram](https://img.shields.io/badge/chat-on%20telegram-blue.svg)](https://t.me/nodetraders)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/tiagosiebler/bitmart-api)
 
 <p align="center">
   <a href="https://www.npmjs.com/package/bitmart-api">
