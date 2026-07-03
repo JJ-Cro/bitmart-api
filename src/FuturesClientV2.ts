@@ -10,6 +10,7 @@ import {
   CancelFuturesOrderRequest,
   CancelFuturesPlanOrderRequest,
   CancelFuturesTrailOrderRequest,
+  CloseAllFuturesPositionsRequest,
   FuturesAccountHistoricOrderRequest,
   FuturesAccountHistoricTransactionRequest,
   FuturesAccountOpenOrdersRequest,
@@ -18,6 +19,7 @@ import {
   FuturesAccountTransfersRequest,
   FuturesAffiliateCustomerInfoRequest,
   FuturesAffiliateDepositWithdrawalListRequest,
+  FuturesAffiliateInviteCheckRequest,
   FuturesAffiliateRebateApiRequest,
   FuturesAffiliateRebateInviteUserRequest,
   FuturesAffiliateRebatesRequest,
@@ -31,6 +33,7 @@ import {
   FuturesSubWalletRequest,
   GetFuturesOrderRequest,
   SetFuturesLeverageRequest,
+  SubmitFuturesFundingAccountTransferRequest,
   SubmitFuturesOrderRequest,
   SubmitFuturesPlanOrderRequest,
   SubmitFuturesSimulatedClaimRequest,
@@ -59,6 +62,7 @@ import {
   FuturesAccountTransfer,
   FuturesAffiliateCustomerInfoResponse,
   FuturesAffiliateDepositWithdrawalListResult,
+  FuturesAffiliateInviteCheckResponse,
   FuturesAffiliateRebateApiResponse,
   FuturesAffiliateRebateInviteUserResponse,
   FuturesAffiliateRebateUserResponse,
@@ -357,6 +361,15 @@ export class FuturesClientV2 extends BaseRestClient {
     return this.postPrivate('contract/private/cancel-all-after', params);
   }
 
+  /**
+   * Feature: Market-close all or filtered futures positions (exchange update 2026-06-16).
+   */
+  closeAllFuturesPositions(
+    params: CloseAllFuturesPositionsRequest,
+  ): Promise<APIResponse<Record<string, never>>> {
+    return this.postPrivate('contract/private/close-all-position', params);
+  }
+
   submitFuturesPlanOrder(params: SubmitFuturesPlanOrderRequest): Promise<
     APIResponse<{
       order_id: number;
@@ -375,6 +388,15 @@ export class FuturesClientV2 extends BaseRestClient {
     params: SubmitFuturesTransferRequest,
   ): Promise<APIResponse<FuturesTransferSubmitResult>> {
     return this.postPrivate('account/v1/transfer-contract', params);
+  }
+
+  /**
+   * Feature: Funding account transfer between funding and futures accounts (exchange update 2026-06-29).
+   */
+  submitFuturesFundingAccountTransfer(
+    params: SubmitFuturesFundingAccountTransferRequest,
+  ): Promise<APIResponse<Record<string, never>>> {
+    return this.postPrivate('contract/private/account/v1/transfer', params);
   }
 
   setFuturesLeverage(
@@ -541,6 +563,15 @@ export class FuturesClientV2 extends BaseRestClient {
     params: FuturesAffiliateRebateUserRequest,
   ): Promise<APIResponse<FuturesAffiliateRebateUserResponse>> {
     return this.getPrivate('contract/private/affiliate/rebate-user', params);
+  }
+
+  /**
+   * Feature: Check if a user CID was invited by the affiliate (exchange update 2026-02-03).
+   */
+  getFuturesAffiliateInviteCheck(
+    params: FuturesAffiliateInviteCheckRequest,
+  ): Promise<APIResponse<FuturesAffiliateInviteCheckResponse>> {
+    return this.getPrivate('contract/private/affiliate/invite-check', params);
   }
 
   /**
