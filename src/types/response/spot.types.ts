@@ -412,3 +412,36 @@ export interface SpotBrokerRebateResult {
     [date: string]: SpotBrokerRebateRow[];
   };
 }
+
+/** GET `uapi-key/v1/account/info` — API key row in account info response. */
+export interface AccountApiKeyInfoV1 {
+  access_key_masked: string;
+  is_current: boolean;
+  permissions: string[];
+  ip_whitelist: string[];
+  api_key_label: string;
+  api_key_created_time: number;
+  api_key_expire_time: number;
+  api_key_status: 'active' | 'frozen' | 'expired';
+}
+
+/** GET `uapi-key/v1/account/info` — account KYC and API key metadata. */
+export interface AccountInfoV1 {
+  cid: string;
+  account_type: 'main' | 'sub';
+  parent_cid: string | null;
+  account_status: 'active' | 'frozen';
+  kyc_level: string;
+  register_time: number;
+  broker_id: string;
+  api_keys: AccountApiKeyInfoV1[];
+}
+
+/** Non-standard wrapper used by `uapi-key/v1/account/info`. */
+export interface UapiKeyAccountInfoResponse {
+  code: number;
+  msg: string;
+  data: AccountInfoV1;
+  errorData: unknown;
+  success: boolean;
+}

@@ -425,3 +425,8 @@ export interface FuturesSimulatedClaimResponse {
   currency: string;
   amount: string;
 }
+
+/** GET `contract/private/affiliate/invite-check` */
+export interface FuturesAffiliateInviteCheckResponse {
+  isInviteUser: boolean;
+}

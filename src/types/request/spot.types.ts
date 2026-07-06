@@ -19,12 +19,25 @@ export interface SpotOrderBookDepthV1Request {
   size?: number;
 }
 
+export interface AccountBalancesV1Request {
+  currency?: string;
+  needUsdValuation?: boolean;
+  sourceAccount?: 'SPOT' | 'FUND';
+}
+
+export interface SubmitAccountTransferV1Request {
+  currency?: string;
+  amount?: string;
+  type?: 'spot_to_fund' | 'fund_to_spot';
+}
+
 export interface SubmitWithdrawalV1Request {
   currency: string;
   amount: string;
   destination: 'To Digital Address';
   address: string;
   address_memo?: string;
+  sourceAccount?: 'SPOT' | 'FUND';
 }
 
 export interface DepositWithdrawHistoryV2Request {

@@ -131,6 +131,20 @@ export interface SubmitFuturesTransferRequest {
   recvWindow?: number; // Trade time limit, allowed range (0,60000], default: 5000 milliseconds
 }
 
+/** POST `contract/private/account/v1/transfer` — funding account ↔ futures account transfer. */
+export interface SubmitFuturesFundingAccountTransferRequest {
+  currency?: string;
+  amount?: string;
+  type?: 'fund_to_contract' | 'contract_to_fund';
+}
+
+/** POST `contract/private/close-all-position` — market-close all or filtered futures positions. */
+export interface CloseAllFuturesPositionsRequest {
+  symbol?: string;
+  contractType: 1 | 2;
+  position_side?: 'long' | 'short';
+}
+
 export interface SetFuturesLeverageRequest {
   symbol: string; // Symbol of the contract(like BTCUSDT)
   leverage?: string; // Order leverage
@@ -262,6 +276,11 @@ export interface FuturesAffiliateDepositWithdrawalListRequest {
   cid: number;
   start_time: number;
   end_time: number;
+}
+
+/** GET `contract/private/affiliate/invite-check` — check if a user CID was invited by the affiliate. */
+export interface FuturesAffiliateInviteCheckRequest {
+  cid: number;
 }
 
 /** GET `contract/public/funding-rate-v2` — optional symbol; omit to query all pairs. */

@@ -44,6 +44,7 @@ import {
   TransferFuturesAssetsRequest,
 } from './types/request/futures.types.js';
 import {
+  AccountBalancesV1Request,
   AccountSubTransfersV1Request,
   CancelAllSpotAlgoOrdersV4Request,
   CancelOrdersV3Request,
@@ -65,6 +66,7 @@ import {
   SpotOrderByClientOrderIdV4Request,
   SpotOrderByIdV4Request,
   SpotOrderTradeHistoryV4Request,
+  SubmitAccountTransferV1Request,
   SubmitMainTransferSubToSubV1Request,
   SubmitMarginTransferV1Request,
   SubmitSpotAlgoOrderV4Request,
@@ -144,6 +146,7 @@ import {
   SubmittedSpotBatchOrderResponseV2,
   SubTransferRow,
   SymbolMarginAccountDetailsV1,
+  UapiKeyAccountInfoResponse,
   WithdrawAddressListItem,
 } from './types/response/spot.types.js';
 
@@ -353,10 +356,28 @@ export class RestClient extends BaseRestClient {
    *
    **/
 
-  getAccountBalancesV1(params?: {
-    currency?: string;
-  }): Promise<APIResponse<{ wallet: AccountCurrencyBalanceV1[] }>> {
+  getAccountBalancesV1(
+    params?: AccountBalancesV1Request,
+  ): Promise<APIResponse<{ wallet: AccountCurrencyBalanceV1[] }>> {
     return this.getPrivate('account/v1/wallet', params);
+  }
+
+  /**
+   * Feature: Query account KYC and API key metadata (exchange update 2026-06-25).
+   * GET `uapi-key/v1/account/info`
+   */
+  getAccountInfoV1(): Promise<UapiKeyAccountInfoResponse> {
+    return this.getPrivate('uapi-key/v1/account/info');
+  }
+
+  /**
+   * Feature: Funding account transfer between funding and spot accounts (exchange update 2026-06-29).
+   * POST `account/v1/transfer`
+   */
+  submitAccountTransferV1(
+    params: SubmitAccountTransferV1Request,
+  ): Promise<APIResponse<Record<string, never>>> {
+    return this.postPrivate('account/v1/transfer', params);
   }
 
   getAccountCurrenciesV1(params?: {
