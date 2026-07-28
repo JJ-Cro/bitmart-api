@@ -17,7 +17,8 @@
 
 > [!CAUTION]
 > BitMart have announced they are ceasing all operations, with a planned orderly shutdown by January 31 2027: https://www.bitmart.com/en-US/support/articles/7922665245339/39162120325403/53544595916059
-> We have therefore taken the decision to archive this SDK. No further updates will be made and users are advised to migrate to our other SDKs for our other supported exchanges.
+>
+> We have therefore taken the decision to archive this SDK. No further updates will be made and users are advised to migrate to [our other SDKs for our supported exchanges](https://siebly.io/#sdks).
 
 ---
 
