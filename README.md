@@ -9,20 +9,21 @@
 [![Telegram](https://img.shields.io/badge/chat-on%20telegram-blue.svg)](https://t.me/nodetraders)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/tiagosiebler/bitmart-api)
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/bitmart-api">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/tiagosiebler/bitmart-api/blob/master/docs/images/logoDarkMode2.svg?raw=true#gh-dark-mode-only">
-      <img alt="SDK Logo" src="https://github.com/tiagosiebler/bitmart-api/blob/master/docs/images/logoBrightMode2.svg?raw=true#gh-light-mode-only">
-    </picture>
-  </a>
-</p>
-
 [1]: https://www.npmjs.com/package/bitmart-api
 
-> [!TIP]
-> Upcoming change: As part of the [Siebly.io](https://siebly.io/?ref=ghbitmart) brand, this SDK will soon be hosted under the [Siebly.io GitHub organisation](https://github.com/sieblyio). The migration is seamless and requires no user changes.
+---
 
+---
+
+> [!CAUTION]
+> BitMart have announced they are ceasing all operations, with a planned orderly shutdown by January 31 2027: https://www.bitmart.com/en-US/support/articles/7922665245339/39162120325403/53544595916059
+> We have therefore taken the decision to archive this SDK. No further updates will be made and users are advised to migrate to our other SDKs for our other supported exchanges.
+
+---
+
+---
+
+<s>
 Complete JavaScript, TypeScript & Node.js SDK for BitMart REST APIs & WebSockets:
 
 - Professional, robust & performant BitMart SDK with extensive production use in live trading environments.
@@ -502,6 +503,7 @@ old ones:
 
 Contributions are encouraged, I will review any incoming pull requests. See the issues tab for todo items.
 
+</s>
 <!-- template_star_history -->
 
 ## Star History
