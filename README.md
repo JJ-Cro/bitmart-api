@@ -3,11 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/bitmart-api)][1]
 [![npm size](https://img.shields.io/bundlephobia/min/bitmart-api/latest)][1]
 [![npm downloads](https://img.shields.io/npm/dt/bitmart-api)][1]
-[![Build & Test](https://github.com/tiagosiebler/bitmart-api/actions/workflows/e2etest.yml/badge.svg?branch=master)](https://github.com/tiagosiebler/bitmart-api/actions/workflows/e2etest.yml)
-[![last commit](https://img.shields.io/github/last-commit/tiagosiebler/bitmart-api)][1]
-[![CodeFactor](https://www.codefactor.io/repository/github/tiagosiebler/bitmart-api/badge)](https://www.codefactor.io/repository/github/tiagosiebler/bitmart-api)
+[![Build & Test](https://github.com/sieblyio/bitmart-api/actions/workflows/e2etest.yml/badge.svg?branch=master)](https://github.com/sieblyio/bitmart-api/actions/workflows/e2etest.yml)
+[![last commit](https://img.shields.io/github/last-commit/sieblyio/bitmart-api)][1]
+[![CodeFactor](https://www.codefactor.io/repository/github/sieblyio/bitmart-api/badge)](https://www.codefactor.io/repository/github/sieblyio/bitmart-api)
 [![Telegram](https://img.shields.io/badge/chat-on%20telegram-blue.svg)](https://t.me/nodetraders)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/tiagosiebler/bitmart-api)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sieblyio/bitmart-api)
 
 [1]: https://www.npmjs.com/package/bitmart-api
 
@@ -85,7 +85,7 @@ Refer to the [examples](./examples) folder for implementation demos, including:
 
 ## Issues & Discussion
 
-- Issues? Check the [issues tab](https://github.com/tiagosiebler/bitmart-api/issues).
+- Issues? Check the [issues tab](https://github.com/sieblyio/bitmart-api/issues).
 - Discuss & collaborate with other node devs? Join our [Node.js Algo Traders](https://t.me/nodetraders) engineering community on telegram.
 - Follow our announcement channel for real-time updates on [X/Twitter](https://x.com/sieblyio)
 
@@ -430,7 +430,7 @@ This file contains AI optimised structure of all the functions in this package, 
 
 ## Used By
 
-[![Repository Users Preview Image](https://dependents.info/tiagosiebler/bitmart-api/image)](https://github.com/tiagosiebler/bitmart-api/network/dependents)
+[![Repository Users Preview Image](https://dependents.info/sieblyio/bitmart-api/image)](https://github.com/sieblyio/bitmart-api/network/dependents)
 
 ---
 
@@ -509,6 +509,6 @@ Contributions are encouraged, I will review any incoming pull requests. See the 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=tiagosiebler/bybit-api,tiagosiebler/okx-api,tiagosiebler/binance,tiagosiebler/bitget-api,tiagosiebler/bitmart-api,tiagosiebler/gateio-api,tiagosiebler/kucoin-api,tiagosiebler/coinbase-api,tiagosiebler/orderbooks,tiagosiebler/accountstate,tiagosiebler/awesome-crypto-examples&type=Date)](https://star-history.com/#tiagosiebler/bybit-api&tiagosiebler/okx-api&tiagosiebler/binance&tiagosiebler/bitget-api&tiagosiebler/bitmart-api&tiagosiebler/gateio-api&tiagosiebler/kucoin-api&tiagosiebler/coinbase-api&tiagosiebler/orderbooks&tiagosiebler/accountstate&tiagosiebler/awesome-crypto-examples&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=tiagosiebler/bybit-api,tiagosiebler/okx-api,tiagosiebler/binance,tiagosiebler/bitget-api,sieblyio/bitmart-api,tiagosiebler/gateio-api,tiagosiebler/kucoin-api,tiagosiebler/coinbase-api,tiagosiebler/orderbooks,tiagosiebler/accountstate,tiagosiebler/awesome-crypto-examples&type=Date)](https://star-history.com/#tiagosiebler/bybit-api&tiagosiebler/okx-api&tiagosiebler/binance&tiagosiebler/bitget-api&sieblyio/bitmart-api&tiagosiebler/gateio-api&tiagosiebler/kucoin-api&tiagosiebler/coinbase-api&tiagosiebler/orderbooks&tiagosiebler/accountstate&tiagosiebler/awesome-crypto-examples&Date)
 
 <!-- template_star_history_end -->

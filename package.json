@@ -81,10 +81,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tiagosiebler/bitmart-api"
+    "url": "git+https://github.com/sieblyio/bitmart-api.git"
   },
   "bugs": {
-    "url": "https://github.com/tiagosiebler/bitmart-api/issues"
+    "url": "https://github.com/sieblyio/bitmart-api/issues"
   },
-  "homepage": "https://github.com/tiagosiebler/bitmart-api#readme"
+  "homepage": "https://github.com/sieblyio/bitmart-api#readme"
 }
